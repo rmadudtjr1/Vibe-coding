@@ -1,0 +1,2268 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>누구나 할 수 있는 AI 활용 - 인포그래픽</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23374473'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='%23fbbf24' font-family='Arial' font-size='18' font-weight='bold'%3EAI%3C/text%3E%3C/svg%3E">
+    <link rel="shortcut icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23374473'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='%23fbbf24' font-family='Arial' font-size='18' font-weight='bold'%3EAI%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23374473'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='%23fbbf24' font-family='Arial' font-size='18' font-weight='bold'%3EAI%3C/text%3E%3C/svg%3E">
+
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.01em;
+        }
+
+        .card {
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .card-google-blue { background-color: #4285f4; color: white; }
+        .card-google-red { background-color: #ea4335; color: white; }
+        .card-google-yellow { background-color: #fbbc04; color: white; }
+        .card-google-green { background-color: #34a853; color: white; }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .clickable-card {
+            cursor: pointer;
+        }
+
+        .practice-link-card {
+            display: block;
+            background-color: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .practice-link-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(56, 71, 97, 0.9);
+            border-color: rgba(165, 180, 252, 0.5);
+        }
+
+        .glossary-button:hover {
+            background-color: #2563eb;
+        }
+
+        .glossary-button {
+            position: fixed;
+            bottom: 8rem;
+            right: 2rem;
+            background-color: #3b82f6;
+            color: white;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 50;
+            transition: background-color 0.3s ease;
+        }
+
+        /* 채팅 스타일 */
+        #chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #chat-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        #chat-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        #chat-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .code-block-wrapper {
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #4a5568;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .copy-button:hover {
+            opacity: 1;
+        }
+
+        .copy-button.copied {
+            background-color: #2f855a;
+        }
+
+        /* 채팅 입력 필드 텍스트 색상 */
+        #user-input {
+            color: #1f2937 !important;
+        }
+
+        #user-input::placeholder {
+            color: #6b7280 !important;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background-color: #1e293b;
+            border-radius: 1rem;
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            max-height: 80vh;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 페이지 네비게이션 스타일 */
+        .page-section {
+            display: none;
+            min-height: calc(100vh + 100px);
+            padding: 2rem 0;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        .page-navigation {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 40;
+        }
+
+        .nav-button {
+            background-color: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        #prev-btn {
+            background-color: #10b981;
+            border-color: #059669;
+        }
+
+        #next-btn {
+            background-color: #3b82f6;
+            border-color: #2563eb;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+        }
+
+        #prev-btn:hover:not(:disabled) {
+            background-color: #059669;
+        }
+
+        #next-btn:hover:not(:disabled) {
+            background-color: #2563eb;
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #94a3b8;
+        }
+
+        .page-indicator {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background-color: #f59e0b;
+            border: 1px solid #d97706;
+            color: #1e293b;
+            padding: 0.5rem 1.25rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 800;
+            z-index: 40;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 언어 전환 스타일 */
+        .language-switcher {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background-color: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            z-index: 40;
+            display: flex;
+            padding: 2px;
+        }
+
+        .lang-button {
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.875rem;
+            border-radius: 0.75rem;
+        }
+
+        .lang-button.active {
+            background-color: #6366f1;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .lang-button:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-15px);
+            }
+
+            60% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .era-icon {
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+
+        .bottom-logo {
+            position: fixed;
+            bottom: 1.5rem;
+            height: 3.5rem;
+            z-index: 30;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .bottom-logo:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .logo-left {
+            left: 2rem;
+        }
+
+        .logo-right {
+            right: 2rem;
+        }
+
+        @media (max-width: 640px) {
+            .bottom-logo {
+                height: 2rem;
+                bottom: 1rem;
+            }
+            .logo-left { left: 1rem; }
+            .logo-right { right: 1rem; }
+        }
+    </style>
+</head>
+
+<body class="text-gray-200">
+
+    <img src="MZ_투명_Logo.png" alt="MegazoneCloud Logo" class="bottom-logo logo-left">
+    <img src="GCP_Logo.png" alt="Google Cloud Logo" class="bottom-logo logo-right">
+
+    <div class="language-switcher">
+        <button id="lang-ko-btn" class="lang-button active">한국어</button>
+        <button id="lang-en-btn" class="lang-button">English</button>
+    </div>
+
+    <div class="page-indicator">
+        <span id="current-page">1</span> / <span id="total-pages">8</span>
+    </div>
+
+    <div class="page-navigation">
+        <button id="prev-btn" class="nav-button" data-lang-key="prevBtn">← 이전</button>
+        <button id="next-btn" class="nav-button" data-lang-key="nextBtn">다음 →</button>
+    </div>
+
+    <div class="container mx-auto p-4 sm:p-8">
+
+        <section class="page-section active" id="page-1">
+            <header class="text-center mb-12">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
+                    <span class="gradient-text" data-lang-key="mainTitle">누구나 할 수 있는 AI 활용</span>
+                </h1>
+                <p class="text-base sm:text-lg text-slate-700 font-medium" data-lang-key="mainSubtitle">처음 해보는 사람도 쉽게 따라 하는 AI 코딩</p>
+            </header>
+
+            <section id="leader-impact"
+                class="bg-white/70 backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-12 border border-slate-200">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-blue-600" data-lang-key="leaderQuote">"나도
+                        해봤어!"<br>"처음인데도 금방 만들었어요."</h2>
+                    <p class="mt-2 text-base text-slate-600" data-lang-key="leaderMessage">이런 경험을 직접 해보실 수 있습니다.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center max-w-7xl mx-auto">
+                    <div
+                        class="card card-google-blue p-10 shadow-lg transform hover:scale-105">
+                        <div class="text-7xl mb-6">💡</div>
+                        <h3 class="text-2xl font-bold mb-4" data-lang-key="benefit1Title">처음에도 부담 없이 시작
+                        </h3>
+                        <p class="text-white/90 text-lg leading-relaxed" data-lang-key="benefit1Desc">복잡해 보이지만 실제로는 말하듯이
+                            지시하면 되는 간단한 방법입니다.
+                        </p>
+                    </div>
+                    <div
+                        class="card card-google-green p-10 shadow-lg transform hover:scale-105">
+                        <div class="text-7xl mb-6">🚀</div>
+                        <h3 class="text-2xl font-bold mb-4" data-lang-key="benefit2Title">작은 시도도 바로 눈에 보이는
+                            결과</h3>
+                        <p class="text-white/90 text-lg leading-relaxed" data-lang-key="benefit2Desc">간단한 요청만으로도 실제 동작하는
+                            결과물을 바로 확인할 수 있어요.</p>
+                    </div>
+                    <div
+                        class="card card-google-yellow p-10 shadow-lg transform hover:scale-105 text-slate-900">
+                        <div class="text-7xl mb-6">💬</div>
+                        <h3 class="text-2xl font-bold mb-4" data-lang-key="benefit3Title">누구나 직접 해볼 수 있는
+                            성취감</h3>
+                        <p class="text-slate-800 text-lg leading-relaxed" data-lang-key="benefit3Desc">"나도 할 수 있구나!"라는
+                            자신감과 함께 새로운 가능성을 발견하게 됩니다.</p>
+                    </div>
+                </div>
+
+            </section>
+        </section>
+        <!-- Section 1: 기존 개발의 문제점 -->
+        <section class="page-section" id="page-2">
+            <header class="text-center mb-12">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
+                    <span class="gradient-text" data-lang-key="page2Title">기존 개발의 문제점</span>
+                </h1>
+                <p class="text-base sm:text-lg text-slate-800 font-medium" data-lang-key="page2Subtitle">우리를 멈추게 하는 개발의 장애물들</p>
+            </header>
+            <div class="container mx-auto p-4 sm:p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Card 1: Yellow -->
+                    <div class="card card-google-yellow p-10 flex flex-col items-center text-center shadow-xl text-slate-900">
+                        <div class="w-20 h-20 rounded-full bg-white/30 flex items-center justify-center border border-white/40 mb-8">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 18v-6c0-1.1.9-2 2-2h14"/><path d="m7 22-4-4 4-4"/><path d="M21 6v6c0 1.1-.9 2-2 2H5"/></svg>
+                        </div>
+                        <h3 class="text-3xl font-black mb-8" data-lang-key="page2Card1Title">단순 반복의 늪</h3>
+                        <div class="flex flex-col gap-4 mb-12 w-full items-center">
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card1Item1">보일러플레이트</span>
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card1Item2">테스트/문서</span>
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card1Item3">코드 리뷰</span>
+                        </div>
+                        <p class="font-black text-2xl mt-auto" data-lang-key="page2Card1Summary">생산성 저하의 주범</p>
+                    </div>
+
+                    <!-- Card 2: Red -->
+                    <div class="card card-google-red p-10 flex flex-col items-center text-center shadow-xl">
+                        <div class="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center border border-white/40 mb-8">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+                        </div>
+                        <h3 class="text-3xl font-black mb-8" data-lang-key="page2Card2Title">코드 해석의 벽</h3>
+                        <div class="flex flex-col gap-4 mb-12 w-full items-center">
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card2Item1">거대 레거시</span>
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card2Item2">파편화된 구조</span>
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card2Item3">기술 스택 과잉</span>
+                        </div>
+                        <p class="font-black text-2xl mt-auto" data-lang-key="page2Card2Summary">인지 능력의 한계</p>
+                    </div>
+
+                    <!-- Card 3: Blue -->
+                    <div class="card card-google-blue p-10 flex flex-col items-center text-center shadow-xl">
+                        <div class="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center border border-white/40 mb-8">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="12.41 6.75 13 2 10.57 4.92"/><polyline points="18.57 12.91 21 10 15.66 10"/><polyline points="8 8 3 14 12 14 11 22 16 16"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </div>
+                        <h3 class="text-3xl font-black mb-8" data-lang-key="page2Card3Title">딜리버리 지연</h3>
+                        <div class="flex flex-col gap-4 mb-12 w-full items-center">
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card3Item1">인력 부족</span>
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card3Item2">유지보수 비용</span>
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card3Item3">출시 지연</span>
+                        </div>
+                        <p class="font-black text-2xl mt-auto" data-lang-key="page2Card3Summary">비즈니스 속도 정체</p>
+                    </div>
+
+                    <!-- Card 4: Green -->
+                    <div class="card card-google-green p-10 flex flex-col items-center text-center shadow-xl">
+                        <div class="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center border border-white/40 mb-8">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+                        </div>
+                        <h3 class="text-3xl font-black mb-8" data-lang-key="page2Card4Title">역할 과부하</h3>
+                        <div class="flex flex-col gap-4 mb-12 w-full items-center">
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card4Item1">CI/CD 관리</span>
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card4Item2">인프라 설정</span>
+                            <span class="px-6 py-2 bg-white/20 rounded-full text-xl font-black border border-white/30 w-full max-w-[240px]" data-lang-key="page2Card4Item3">보안/모니터링</span>
+                        </div>
+                        <p class="font-black text-2xl mt-auto" data-lang-key="page2Card4Summary">핵심 가치 집중 저하</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Vibe Coding 소개 -->
+        <section class="page-section" id="page-3">
+            <header class="text-center mb-12">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
+                    <span class="gradient-text" data-lang-key="page3Title">Vibe Coding 소개</span>
+                </h1>
+                <p class="text-base sm:text-lg text-slate-600" data-lang-key="page3Subtitle">의도와 분위기를 AI에게 전달하여 소프트웨어를 완성하는 차세대 개발 방식</p>
+            </header>
+            <div class="container mx-auto p-4 sm:p-6">
+                <!-- 정의 섹션 -->
+                <div class="bg-white rounded-2xl p-8 mb-10 border border-slate-200 shadow-xl">
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center flex-shrink-0 border border-blue-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800 mb-2" data-lang-key="page3Section1Title">Vibe Coding 이란?</h2>
+                            <p class="text-slate-700 text-lg leading-relaxed font-medium" data-lang-key="page3Section1Desc">Vibe Coding은 복잡한 문법이나 로직에 얽매이지 않고, 개발자가 구현하고자 하는 의도(Intent)와 분위기(Vibe)를 AI에게 전달하여 소프트웨어를 완성하는 차세대 개발 방식입니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
+                    <!-- 장점 섹션 -->
+                    <div class="flex flex-col space-y-6">
+                        <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-3">
+                            <span class="w-1.5 h-6 bg-emerald-500 rounded-full"></span>
+                            <span data-lang-key="page3Section2Title">Vibe Coding의 장점</span>
+                        </h2>
+                        <div class="grid grid-cols-2 gap-6 flex-grow">
+                            <div class="card card-google-blue p-6 shadow-lg flex flex-col items-center text-center h-full">
+                                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🗣️</div>
+                                <h3 class="text-xl font-black leading-tight mt-auto" data-lang-key="page3Section2Item1">자연어 중심의 의도 전달</h3>
+                            </div>
+                            <div class="card card-google-red p-6 shadow-lg flex flex-col items-center text-center h-full">
+                                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🤖</div>
+                                <h3 class="text-xl font-black leading-tight mt-auto" data-lang-key="page3Section2Item2">AI의 자율적 코드 생성</h3>
+                            </div>
+                            <div class="card card-google-yellow p-6 shadow-lg flex flex-col items-center text-center h-full text-slate-900">
+                                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">⚡</div>
+                                <h3 class="text-xl font-black leading-tight mt-auto" data-lang-key="page3Section2Item3">개발 진입 장벽의 붕괴</h3>
+                            </div>
+                            <div class="card card-google-green p-6 shadow-lg flex flex-col items-center text-center h-full">
+                                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🏗️</div>
+                                <h3 class="text-xl font-black leading-tight mt-auto" data-lang-key="page3Section2Item4">초고속 프로토타이핑</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 원칙 섹션 -->
+                    <div class="flex flex-col space-y-6">
+                        <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-3">
+                            <span class="w-1.5 h-6 bg-amber-500 rounded-full"></span>
+                            <span data-lang-key="page3Section3Title">Vibe Coding의 원칙</span>
+                        </h2>
+                        <div class="space-y-4 flex-grow flex flex-col justify-between">
+                            <div class="flex items-start gap-4 p-5 card-google-blue rounded-2xl shadow-md flex-grow">
+                                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-lg font-black flex-shrink-0 border border-white/30">1</div>
+                                <p class="text-white text-lg font-bold py-2 leading-relaxed" data-lang-key="page3Section3Item1">작은 단위로 구현해야 정확도가 올라갑나다.</p>
+                            </div>
+                            <div class="flex items-start gap-4 p-5 card-google-red rounded-2xl shadow-md flex-grow">
+                                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-lg font-black flex-shrink-0 border border-white/30">2</div>
+                                <p class="text-white text-lg font-bold py-2 leading-relaxed" data-lang-key="page3Section3Item2">내가 만들고자 하는 기능을 AI에게 전달합니다.</p>
+                            </div>
+                            <div class="flex items-start gap-4 p-5 card-google-green rounded-2xl shadow-md flex-grow">
+                                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-lg font-black flex-shrink-0 border border-white/30">3</div>
+                                <p class="text-white text-lg font-bold py-2 leading-relaxed" data-lang-key="page3Section3Item3">테스트 코드 작성을 통해 잘 구현되었는지 확인합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Section 3: 기업에서 왜 Vibe Coding 이 필요한가 -->
+        <section class="page-section" id="page-4">
+            <header class="text-center mb-12">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
+                    <span class="gradient-text" data-lang-key="page4Title">기업에서 왜 Vibe Coding 이 필요한가</span>
+                </h1>
+                <p class="text-base sm:text-lg text-slate-800 font-medium" data-lang-key="page4Subtitle">비즈니스 민첩성과 리소스 최적화</p>
+            </header>
+            <div class="container mx-auto p-4 sm:p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    <!-- Card 1: Blue -->
+                    <div class="card card-google-blue p-10 flex flex-col items-center text-center shadow-xl">
+                        <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-8 border border-white/30 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                        </div>
+                        <h3 class="text-3xl font-black mb-8" data-lang-key="page4Section1Title">기술 부채 해결</h3>
+                        <div class="space-y-4 mb-8">
+                            <span class="block text-xl sm:text-2xl font-bold" data-lang-key="page4Section1Item1">레거시 분석 자동화</span>
+                            <span class="block text-xl sm:text-2xl font-bold" data-lang-key="page4Section1Item2">현대적 리팩터링</span>
+                        </div>
+                        <p class="mt-auto text-xl font-black pb-4 text-cyan-100" data-lang-key="page4Section1Summary">수개월 소요 작업을 며칠 만에</p>
+                    </div>
+
+                    <!-- Card 2: Red -->
+                    <div class="card card-google-red p-10 flex flex-col items-center text-center shadow-xl">
+                        <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-8 border border-white/30 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-2 2.5h3L12 7h3l-4 5h5l-4 7h10l-2-2.5h-3l2-2.5h-3l4-5h-5l4-7z"/><path d="M3 3v18h7"/></svg>
+                        </div>
+                        <h3 class="text-3xl font-black mb-8" data-lang-key="page4Section2Title">초고속 제품 출시</h3>
+                        <div class="space-y-4 mb-8">
+                            <span class="block text-xl sm:text-2xl font-bold" data-lang-key="page4Section2Item1">Context Switching 최소화</span>
+                            <span class="block text-xl sm:text-2xl font-bold" data-lang-key="page4Section2Item2">1인 풀스택 개발 가능</span>
+                        </div>
+                        <p class="mt-auto text-xl font-black pb-4 text-red-100" data-lang-key="page4Section2Summary">TTM 80% 이상 단축</p>
+                    </div>
+
+                    <!-- Card 3: Green -->
+                    <div class="card card-google-green p-10 flex flex-col items-center text-center shadow-xl">
+                        <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-8 border border-white/30 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h3 class="text-3xl font-black mb-8" data-lang-key="page4Section3Title">협업 장벽 제거</h3>
+                        <div class="space-y-4 mb-8">
+                            <span class="block text-xl sm:text-2xl font-bold" data-lang-key="page4Section3Item1">현업 전문가 직접 참여</span>
+                            <span class="block text-xl sm:text-2xl font-bold" data-lang-key="page4Section3Item2">실시간 Mockup 생성</span>
+                        </div>
+                        <p class="mt-auto text-xl font-black pb-4 text-emerald-100" data-lang-key="page4Section3Summary">기획 재작업 비용 최소화</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Gemini CLI -->
+        <section class="page-section" id="page-5">
+            <header class="text-center mb-16">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4">
+                    <span class="gradient-text" data-lang-key="page5Title">Gemini CLI</span>
+                </h1>
+                <p class="text-lg sm:text-xl text-slate-600" data-lang-key="page5Subtitle">터미널 기반의 강력한 AI 에이전트</p>
+            </header>
+            <div class="container mx-auto p-4 sm:p-8">
+                <!-- 정의 섹션 -->
+                <div class="bg-white rounded-2xl p-8 mb-10 border border-slate-200 shadow-xl">
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="w-16 h-16 bg-indigo-500/10 rounded-2xl flex items-center justify-center flex-shrink-0 border border-indigo-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800 mb-2" data-lang-key="page5Section1Title">Gemini CLI 란?</h2>
+                            <p class="text-slate-700 text-lg leading-relaxed font-medium" data-lang-key="page5Section1Desc">터미널 환경에서 Google의 강력한 AI 모델과 직접 대화하고 텍스트 생성, 코드 분석, 시스템 자동화를 수행할 수 있는 명령어 라인 인터페이스 도구입니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-8" data-lang-key="page5Section2Title">Gemini CLI의 특별한 기능</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="card card-google-blue p-6 shadow-md">
+                        <h3 class="text-xl font-bold mb-2" data-lang-key="page5Card1Title">프롬프트 기반 Spec 설계</h3>
+                        <p class="text-white/90" data-lang-key="page5Card1Desc">사용자의 막연한 아이디어를 체계적인 개발 문서(요구사항, 설계안)로 자동 변환합니다.</p>
+                    </div>
+                    <div class="card card-google-red p-6 shadow-md">
+                        <h3 class="text-xl font-bold mb-2" data-lang-key="page5Card2Title">멀티파일 코드 생성</h3>
+                        <p class="text-white/90" data-lang-key="page5Card2Desc">하나의 프롬프트로 여러 파일을 포함한 전체 프로젝트 구조를 한 번에 생성합니다.</p>
+                    </div>
+                    <div class="card card-google-green p-6 shadow-md">
+                        <h3 class="text-xl font-bold mb-2" data-lang-key="page5Card3Title">시스템 인스트럭션 제어</h3>
+                        <p class="text-white/90" data-lang-key="page5Card3Desc">.txt 또는 .md 파일을 통해 AI의 작업 방식과 코딩 표준을 강제로 스티어링합니다.</p>
+                    </div>
+                    <div class="card card-google-blue p-6 shadow-md">
+                        <h3 class="text-xl font-bold mb-2" data-lang-key="page5Card4Title">터미널 통합 자동화</h3>
+                        <p class="text-white/90" data-lang-key="page5Card4Desc">환경 구축(npm install 등)부터 실시간 디버깅까지 터미널과 직접 상호작용합니다.</p>
+                    </div>
+                    <div class="card card-google-red p-6 shadow-md">
+                        <h3 class="text-xl font-bold mb-2" data-lang-key="page5Card5Title">지능형 컨텍스트 참조</h3>
+                        <p class="text-white/90" data-lang-key="page5Card5Desc">@file, #codebase 지시어로 파일 시스템 전체 맥락을 이해한 답변을 제공합니다.</p>
+                    </div>
+                    <div class="card card-google-green p-6 shadow-md">
+                        <h3 class="text-xl font-bold mb-2" data-lang-key="page5Card6Title">배포 자동화 워크플로우</h3>
+                        <p class="text-white/90" data-lang-key="page5Card6Desc">로컬에서 완성된 코드를 Firebase나 Cloud Run 등으로 즉시 배포하는 스크립트를 실행합니다.</p>
+                    </div>
+                </div>
+                <div class="card p-8 card-google-yellow border-none shadow-lg transform hover:scale-105 text-slate-900">
+                    <h3 class="text-2xl font-black mb-4 text-center" data-lang-key="page5Card13Title">직접 수행하는 AI</h3>
+                    <p class="text-center text-slate-800 text-lg font-medium" data-lang-key="page5Card13Desc">AI가 코드 수정, 테스트 실행, 프로젝트 분석을 직접 수행하는 '에이전트' 역할을 합니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Google Code Assist -->
+        <section class="page-section" id="page-6">
+            <header class="text-center mb-12">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4">
+                    <span class="gradient-text" data-lang-key="page6Title">Google Code Assist</span>
+                </h1>
+                <p class="text-xl sm:text-2xl text-slate-800 font-bold" data-lang-key="page6Subtitle">IDE 기반의 지능형 코딩 파트너</p>
+            </header>
+            <div class="container mx-auto p-4 sm:p-8">
+                <!-- 정의 섹션 -->
+                <div class="bg-white rounded-2xl p-8 mb-10 border border-slate-200 shadow-xl">
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center flex-shrink-0 border border-emerald-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800 mb-2" data-lang-key="page6Section1Title">Google Code Assist 란?</h2>
+                            <p class="text-slate-700 text-lg leading-relaxed font-medium" data-lang-key="page6Section1Desc">VS Code, JetBrains 등 즐겨 쓰는 IDE에서 직접 동작하며, 대규모 코드베이스와 클라우드 환경에 최적화된 개발 지원을 제공하는 AI 보조 도구입니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-8" data-lang-key="page6Section2Title">Code Assist의 주요 기능</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="card card-google-red p-8 shadow-lg">
+                        <h3 class="text-2xl font-black mb-4" data-lang-key="page6Card1Title">실시간 AI 코드 완성</h3>
+                        <p class="text-white/90 text-lg" data-lang-key="page6Card1Desc">코드 작성 중 AI가 다음 코드를 예측하여 제안하며, 자연어 주석만으로 기능을 구현합니다.</p>
+                    </div>
+                    <div class="card card-google-green p-8 shadow-lg">
+                        <h3 class="text-2xl font-black mb-4" data-lang-key="page6Card2Title">코드 이해 및 리팩터링</h3>
+                        <p class="text-white/90 text-lg" data-lang-key="page6Card2Desc">복잡한 로직을 설명하고 성능 개선, 가독성 향상을 위한 수정안을 즉시 제시합니다.</p>
+                    </div>
+                    <div class="card card-google-blue p-8 shadow-lg">
+                        <h3 class="text-2xl font-black mb-4" data-lang-key="page6Card3Title">클라우드 최적화 지원</h3>
+                        <p class="text-white/90 text-lg" data-lang-key="page6Card3Desc">Google Cloud 서비스 연동 코드 및 인프라(IaC) 구성을 모범 사례 기반으로 생성합니다.</p>
+                    </div>
+                    <div class="card card-google-yellow p-8 shadow-lg text-slate-900">
+                        <h3 class="text-2xl font-black mb-4" data-lang-key="page6Card4Title">엔터프라이즈 보안 및 관리</h3>
+                        <p class="text-slate-800 text-lg" data-lang-key="page6Card4Desc">조직 내 코드 스타일 준수, API 키 보호 등 기업 환경에 필수적인 거버넌스를 제공합니다.</p>
+                    </div>
+                </div>
+                <div class="card p-10 card-google-green border-none shadow-xl transform hover:scale-105">
+                    <h3 class="text-3xl font-black mb-4 text-center" data-lang-key="page6SummaryTitle">보조하는 AI</h3>
+                    <p class="text-center text-white/90 text-xl font-bold" data-lang-key="page6SummaryDesc">개발자가 중심이 되고, AI가 실시간으로 제안 및 리뷰를 수행하는 '파트너' 역할을 합니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Gemini CLI vs Code Assist 핵심 차이 -->
+        <section class="page-section" id="page-7">
+            <header class="text-center mb-16">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4">
+                    <span class="gradient-text" data-lang-key="page7Title">핵심 차이점 요약</span>
+                </h1>
+                <p class="text-xl sm:text-2xl text-slate-800 font-bold" data-lang-key="page7Subtitle">나에게 맞는 AI 도구 선택하기</p>
+            </header>
+            <div class="container mx-auto p-4 sm:p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch max-w-5xl mx-auto mb-16">
+                    <!-- Gemini CLI Summary -->
+                    <div class="card card-google-blue p-8 flex flex-col items-center text-center shadow-xl transform hover:scale-105">
+                        <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-6 border border-white/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-3xl font-black mb-2">Gemini CLI</h3>
+                        <p class="text-white/90 font-bold mb-6 text-lg" data-lang-key="page7CliRole">자동화 & 실행 에이전트</p>
+                        <ul class="space-y-4 text-white text-lg w-full">
+                            <li class="flex items-center justify-center space-x-2">
+                                <span class="font-black">✓</span>
+                                <span data-lang-key="page7CliFeat1">대규모 구조 자동 생성</span>
+                            </li>
+                            <li class="flex items-center justify-center space-x-2">
+                                <span class="font-black">✓</span>
+                                <span data-lang-key="page7CliFeat2">터미널 명령 직접 실행</span>
+                            </li>
+                            <li class="flex items-center justify-center space-x-2">
+                                <span class="font-black">✓</span>
+                                <span data-lang-key="page7CliFeat3">DevOps 및 CI/CD 통합</span>
+                            </li>
+                        </ul>
+                        <div class="mt-auto pt-8">
+                            <span class="px-6 py-2 bg-white/20 rounded-full font-black shadow-md border border-white/30" data-lang-key="page7CliKeyword">"AI가 수행"</span>
+                        </div>
+                    </div>
+
+                    <!-- Code Assist Summary -->
+                    <div class="card card-google-green p-8 flex flex-col items-center text-center shadow-xl transform hover:scale-105">
+                        <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-6 border border-white/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                        </div>
+                        <h3 class="text-3xl font-black mb-2">Code Assist</h3>
+                        <p class="text-white/90 font-bold mb-6 text-lg" data-lang-key="page7AsstRole">실시간 코딩 보조 파트너</p>
+                        <ul class="space-y-4 text-white text-lg w-full">
+                            <li class="flex items-center justify-center space-x-2">
+                                <span class="font-black">✓</span>
+                                <span data-lang-key="page7AsstFeat1">정교한 코드 구현 및 리뷰</span>
+                            </li>
+                            <li class="flex items-center justify-center space-x-2">
+                                <span class="font-black">✓</span>
+                                <span data-lang-key="page7AsstFeat2">IDE 내 실시간 인라인 제안</span>
+                            </li>
+                            <li class="flex items-center justify-center space-x-2">
+                                <span class="font-black">✓</span>
+                                <span data-lang-key="page7AsstFeat3">조직 보안 정책 준수</span>
+                            </li>
+                        </ul>
+                        <div class="mt-auto pt-8">
+                            <span class="px-6 py-2 bg-white/20 rounded-full font-black shadow-md border border-white/30" data-lang-key="page7AsstKeyword">"AI가 보조"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comparison Table -->
+                <div class="max-w-4xl mx-auto overflow-hidden rounded-3xl border border-slate-200 shadow-2xl">
+                    <table class="w-full text-lg border-collapse bg-white">
+                        <thead>
+                            <tr class="bg-slate-900 text-white">
+                                <th class="py-6 px-8 text-left font-black card-google-yellow text-slate-900" data-lang-key="page7TableCol1">비교 항목</th>
+                                <th class="py-6 px-8 text-center font-black bg-blue-600">Gemini CLI</th>
+                                <th class="py-6 px-8 text-center font-black bg-emerald-600">Code Assist</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-800">
+                            <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                                <td class="py-6 px-8 font-black text-slate-500 bg-slate-50/50" data-lang-key="page7TableRow1Col1">사용 환경</td>
+                                <td class="py-6 px-8 text-center font-bold" data-lang-key="page7TableRow1Col2">터미널 (Terminal)</td>
+                                <td class="py-6 px-8 text-center font-bold" data-lang-key="page7TableRow1Col3">IDE (Extension)</td>
+                            </tr>
+                            <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                                <td class="py-6 px-8 font-black text-slate-500 bg-slate-50/50" data-lang-key="page7TableRow2Col1">사용자</td>
+                                <td class="py-6 px-8 text-center font-bold" data-lang-key="page7TableRow2Col2">자동화 지향 개발자</td>
+                                <td class="py-6 px-8 text-center font-bold" data-lang-key="page7TableRow2Col3">모든 기업 개발팀</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="py-6 px-8 font-black text-slate-500 bg-slate-50/50" data-lang-key="page7TableRow3Col1">강점</td>
+                                <td class="py-6 px-8 text-center font-black text-blue-600" data-lang-key="page7TableRow3Col2">멀티파일 프로젝트 빌드</td>
+                                <td class="py-6 px-8 text-center font-black text-emerald-600" data-lang-key="page7TableRow3Col3">세밀한 코드 최적화</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Vibe Coding 실습 (Links to user's local projects) -->
+        <section class="page-section" id="page-8">
+            <header class="text-center mb-16">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4">
+                    <span class="gradient-text" data-lang-key="page8Title">Vibe Coding 실습</span>
+                </h1>
+                <p class="text-xl sm:text-2xl text-slate-800 font-bold" data-lang-key="page8Subtitle">직접 경험해 보세요!</p>
+            </header>
+            <div class="container mx-auto p-4 sm:p-8">
+                <div class="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto mb-16">
+                    <a href="hr_test/index.html" target="_blank" class="bg-white rounded-3xl flex flex-col items-center justify-center text-center shadow-xl border border-slate-100 transform hover:scale-110 h-72 p-8 transition-all duration-300">
+                        <div class="flex justify-center mb-8">
+                            <div class="w-20 h-20 bg-blue-500/10 rounded-2xl flex items-center justify-center border border-blue-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4285f4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2H4Z" />
+                                    <path d="M15 2v20" />
+                                    <path d="M8 7h5" />
+                                    <path d="M8 12h5" />
+                                    <path d="M8 17h5" />
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-black text-slate-800 mb-3" data-lang-key="page8Practice1Title">이력서 자동 분류</h3>
+                        <p class="text-slate-500 text-base" data-lang-key="page8Practice1Desc">hr_test 디렉토리</p>
+                    </a>
+                    <a href="corp_card/index.html" target="_blank" class="bg-white rounded-3xl flex flex-col items-center justify-center text-center shadow-xl border border-slate-100 transform hover:scale-110 h-72 p-8 transition-all duration-300">
+                        <div class="flex justify-center mb-8">
+                            <div class="w-20 h-20 bg-green-500/10 rounded-2xl flex items-center justify-center border border-green-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#34a853" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 3v18h18" />
+                                    <path d="m19 9-5 5-4-4-3 3" />
+                                    <path d="M14 9h5v5" />
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-black text-slate-800 mb-3" data-lang-key="page8Practice2Title">카드 사용 내역 분류</h3>
+                        <p class="text-slate-500 text-base" data-lang-key="page8Practice2Desc">corp_card 디렉토리</p>
+                    </a>
+                    <a href="web_page/index.html" target="_blank" class="bg-white rounded-3xl flex flex-col items-center justify-center text-center shadow-xl border border-slate-100 transform hover:scale-110 h-72 p-8 transition-all duration-300">
+                        <div class="flex justify-center mb-8">
+                            <div class="w-20 h-20 bg-red-500/10 rounded-2xl flex items-center justify-center border border-red-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ea4335" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M15.061 3.39L14.11 2.44a1.93 1.93 0 0 0-2.73 0l-1.83 1.83c-.39.39-.39 1.02 0 1.41l2.73 2.73c.39.39 1.02.39 1.41 0l1.83-1.83a1.93 1.93 0 0 0 0-2.73Z" />
+                                    <path d="m16 5-8 8" />
+                                    <path d="M22 12h-2" />
+                                    <path d="M4 12H2" />
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-black text-slate-800 mb-3" data-lang-key="page8Practice3Title">마케팅 및 홍보 웹 페이지</h3>
+                        <p class="text-slate-500 text-base" data-lang-key="page8Practice3Desc">web_page 디렉토리</p>
+                    </a>
+                </div>
+
+                <!-- 설치 가이드 버튼 추가 -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-6 mt-12">
+                    <button id="install-guide-btn" class="bg-slate-900 text-white px-8 py-4 rounded-full text-lg font-black shadow-2xl hover:bg-blue-600 transform hover:scale-105 transition-all flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        <span data-lang-key="page8InstallBtn">Gemini CLI 설치 가이드</span>
+                    </button>
+                    <button id="codeassist-guide-btn" class="bg-slate-900 text-white px-8 py-4 rounded-full text-lg font-black shadow-2xl hover:bg-emerald-600 transform hover:scale-105 transition-all flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m10 13-2 2-2-2"/><path d="m20 13-2 2-2-2"/><path d="M18 15V7a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v8"/>
+                        </svg>
+                        <span data-lang-key="page8CodeAssistBtn">Code Assist 설치 가이드</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    </div>
+
+    <button id="glossary-toggle-button" class="glossary-button" title="용어집 보기">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+        </svg>
+    </button>
+
+    <!-- Gemini CLI 설치 가이드 모달 -->
+    <div id="install-overlay" class="modal-overlay">
+        <div class="modal-content" style="max-width: 900px; max-height: 90vh;">
+            <div class="flex justify-between items-center p-6 border-b border-slate-600 flex-shrink-0">
+                <h2 class="text-2xl font-bold text-white" data-lang-key="installModalTitle">Gemini CLI 설치 가이드</h2>
+                <button id="install-close-button" class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <div class="p-8 space-y-10 overflow-y-auto bg-slate-50 text-slate-900">
+                
+                <!-- 1. Google Cloud CLI -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-blue-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm">1</span>
+                        <span data-lang-key="installStep1Title">Google Cloud CLI 설치</span>
+                    </h3>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <p class="font-bold mb-2 flex items-center gap-2">
+                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12-5.373-12-12-12-12 5.373-12 12zm1.5 0c0-5.799 4.701-10.5 10.5-10.5s10.5 4.701 10.5 10.5-4.701 10.5-10.5 10.5-10.5-4.701-10.5-10.5z"/></svg>
+                                    <span data-lang-key="installStep1Win">Windows</span>
+                                </p>
+                                <a href="https://cloud.google.com/sdk/docs/install-sdk?hl=ko#windows" target="_blank" class="text-blue-500 text-sm underline block mb-2" data-lang-key="caStep1Download">설치 프로그램 다운로드</a>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <p class="font-bold mb-2 flex items-center gap-2">
+                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.96.95-2.11 1.72-3.45 2.32C12.26 23.23 11.23 24 10.15 24c-1.12 0-2.07-.63-3.15-.63-1.08 0-2.12.63-3.15.63-1.08 0-2.11-.77-3.45-1.4-1.34-.6-2.49-1.37-3.45-2.32C-4.14 18.2 -5 15.68-5 12.98c0-2.69.86-5.21 2.58-7.29 1.72-2.08 3.96-3.23 6.72-3.23 1.13 0 2.21.36 3.25.72s2.05.72 2.3.72c.25 0 1.25-.36 2.3-.72s2.12-.72 3.25-.72c2.76 0 5 1.15 6.72 3.23C20.85 7.77 21.71 10.29 21.71 12.98c0 2.7-.86 5.22-2.58 7.3z"/></svg>
+                                    <span data-lang-key="installStep1Mac">macOS</span>
+                                </p>
+                                <p class="text-xs text-slate-500 mb-2" data-lang-key="installStep1MacBrew">Homebrew 사용 시:</p>
+                                <div class="bg-slate-900 text-slate-100 p-2 rounded font-mono text-xs mb-2">
+                                    <code>brew install --cask google-cloud-sdk</code>
+                                </div>
+                                <a href="https://cloud.google.com/sdk/docs/install-sdk?hl=ko#mac" target="_blank" class="text-blue-500 text-sm underline block" data-lang-key="installStep1Direct">직접 다운로드 설치 가이드</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Node.js -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-green-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center text-sm">2</span>
+                        <span data-lang-key="installStep2Title">Node.js 설치 (LTS 권장)</span>
+                    </h3>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-slate-50 rounded-xl">
+                                <p class="font-bold mb-2" data-lang-key="installStep2Win">Windows</p>
+                                <a href="https://nodejs.org/ko/download" target="_blank" class="text-blue-500 text-sm underline block" data-lang-key="caStep1Download">Installer 다운로드 (.msi)</a>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl">
+                                <p class="font-bold mb-2" data-lang-key="installStep2Mac">macOS</p>
+                                <div class="bg-slate-900 text-slate-100 p-2 rounded font-mono text-xs mb-2">
+                                    <code>brew install node</code>
+                                </div>
+                                <a href="https://nodejs.org/ko/download" target="_blank" class="text-blue-500 text-sm underline block" data-lang-key="installStep1Direct">pkg 다운로드 설치</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Gemini CLI -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-red-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center text-sm">3</span>
+                        <span data-lang-key="installStep3Title">Gemini CLI 설치</span>
+                    </h3>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="font-medium mb-3" data-lang-key="installStep3Desc">터미널(또는 CMD/PowerShell)에서 아래 명령어를 실행하세요.</p>
+                        <div class="bg-slate-900 text-slate-100 p-4 rounded-xl font-mono text-sm relative group">
+                            <code>npm install -g @google/gemini-cli</code>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2" data-lang-key="installStep3Tip">※ Mac/Linux에서 권한 오류 발생 시 앞에 <code>sudo </code>를 붙여주세요.</p>
+                    </div>
+                </section>
+
+                <!-- 4. 환경 설정 및 프로젝트 선택 -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-amber-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-amber-600 text-white flex items-center justify-center text-sm">4</span>
+                        <span data-lang-key="installStep4Title">환경 설정 및 프로젝트 선택</span>
+                    </h3>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                        <div>
+                            <p class="font-bold mb-2" data-lang-key="installStep4Desc1">1) Google Cloud 프로젝트 ID 확인</p>
+                            <p class="text-sm text-slate-600 mb-2" data-lang-key="installStep4Console">Google Cloud Console의 대시보드에서 '프로젝트 ID'를 복사하세요.</p>
+                            <a href="https://console.cloud.google.com/home/dashboard" target="_blank" class="text-blue-500 text-sm underline" data-lang-key="installStep4GcpLink">GCP 콘솔 대시보드 바로가기</a>
+                        </div>
+                        <hr class="border-slate-100">
+                        <div>
+                            <p class="font-bold mb-2" data-lang-key="installStep4Desc2">2) .env 파일 생성 및 ID 입력</p>
+                            <p class="text-sm text-slate-600 mb-3" data-lang-key="installStep4EnvTip">실습 프로젝트의 <b>루트(최상위) 디렉토리</b>에 <code>.env</code> 파일을 만들고 복사한 ID를 넣으세요.</p>
+                            <div class="bg-slate-100 p-4 rounded-xl border border-slate-300 font-mono text-sm text-slate-800">
+                                GOOGLE_CLOUD_PROJECT="<span class="text-blue-600 font-bold">여기에-복사한-ID-입력</span>"<br>
+                                GOOGLE_CLOUD_LOCATION="global"
+                            </div>
+                        </div>
+                        <hr class="border-slate-100">
+                        <div>
+                            <p class="font-bold mb-2" data-lang-key="installStep4Auth">3) Google Cloud 인증</p>
+                            <div class="bg-slate-900 text-slate-100 p-4 rounded-xl font-mono text-sm">
+                                <code>gcloud auth login</code>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. VS Code 설치 -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-indigo-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm">5</span>
+                        <span data-lang-key="installStep5Title">VS Code 설치</span>
+                    </h3>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-slate-50 rounded-xl">
+                                <p class="font-bold mb-2 text-sm" data-lang-key="installStep5Common">Windows/Mac 공용</p>
+                                <a href="https://code.visualstudio.com/download" target="_blank" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold text-xs hover:bg-indigo-700" data-lang-key="installStep5Download">VS Code 다운로드</a>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl">
+                                <p class="font-bold mb-2 text-sm" data-lang-key="installStep5MacBrew">macOS (Homebrew)</p>
+                                <div class="bg-slate-900 text-slate-100 p-2 rounded font-mono text-xs">
+                                    <code>brew install --cask visual-studio-code</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. Gemini CLI Companion 설치 -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-violet-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-violet-600 text-white flex items-center justify-center text-sm">6</span>
+                        <span data-lang-key="installStep6Title">Gemini CLI Companion 설치</span>
+                    </h3>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <p class="font-medium" data-lang-key="installStep6Desc">VS Code에서 에이전트를 더 효율적으로 사용하기 위한 확장 프로그램을 설치합니다.</p>
+                        <div class="flex flex-col gap-2">
+                            <p class="text-sm font-bold text-slate-600" data-lang-key="installStep6MethodTitle">설치 방법:</p>
+                            <ol class="list-decimal list-inside text-sm space-y-1 text-slate-700">
+                                <li data-lang-key="installStep6Method1">VS Code 왼쪽 메뉴의 <b>Extensions</b>(확장) 아이콘 클릭</li>
+                                <li data-lang-key="installStep6Method2">검색창에 <b>'Gemini CLI Companion'</b> 입력</li>
+                                <li data-lang-key="installStep6Method3">파란색 <b>Install</b> 버튼 클릭</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. Gemini 실행 및 인증 -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-pink-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-pink-600 text-white flex items-center justify-center text-sm">7</span>
+                        <span data-lang-key="installStep7Title">Gemini 실행 및 인증</span>
+                    </h3>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <p class="font-medium" data-lang-key="installStep7Desc">이제 모든 준비가 끝났습니다! 터미널에서 Gemini를 실행하고 인증을 완료하세요.</p>
+                        <div class="space-y-4">
+                            <div class="flex flex-col gap-2">
+                                <p class="text-sm font-bold text-slate-600" data-lang-key="installStep7MethodTitle">실행 및 인증 단계:</p>
+                                <ol class="list-decimal list-inside text-sm space-y-2 text-slate-700">
+                                    <li data-lang-key="installStep7Method1">VS Code 상단 메뉴에서 <b>Terminal</b> > <b>New Terminal</b> 선택</li>
+                                    <li data-lang-key="installStep7Method2">터미널에 <code>gemini</code> 입력 후 엔터</li>
+                                    <li data-lang-key="installStep7Method3">Gemini 프롬프트가 뜨면 <code>/auth</code>를 입력하고 엔터</li>
+                                    <li data-lang-key="installStep7Method4">화살표 키를 사용하여 <b>Vertex AI</b>를 선택하고 엔터</li>
+                                    <li data-lang-key="installStep7Method5">자동으로 열리는 웹 브라우저에서 Google 계정으로 <b>로그인</b></li>
+                                </ol>
+                            </div>
+                            <div class="bg-slate-900 text-slate-100 p-4 rounded-xl font-mono text-sm leading-relaxed">
+                                <span class="text-slate-500"># 1. Gemini 실행</span><br>
+                                <code>gemini</code><br>
+                                <span class="text-blue-400">?</span> <span class="text-slate-300">How can I help you today?</span><br><br>
+                                <span class="text-slate-500"># 2. 인증 명령어 입력</span><br>
+                                <code>/auth</code><br>
+                                <span class="text-blue-400">?</span> <span class="text-slate-300">Select an authentication method:</span><br>
+                                <span class="text-emerald-400">❯ Vertex AI</span><br>
+                                <span class="text-slate-500">  Google AI (Gemini API)</span>
+                            </div>
+                            <p class="text-xs text-slate-500" data-lang-key="installStep7Success">※ 로그인이 완료되면 이제 대화와 코딩 실습을 시작할 수 있습니다!</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Assist 설치 가이드 모달 -->
+    <div id="codeassist-overlay" class="modal-overlay">
+        <div class="modal-content" style="max-width: 900px; max-height: 90vh;">
+            <div class="flex justify-between items-center p-6 border-b border-slate-600 flex-shrink-0 text-white">
+                <h2 class="text-2xl font-bold" data-lang-key="codeAssistModalTitle">Code Assist 설치 가이드</h2>
+                <button id="codeassist-close-button" class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <div class="p-8 space-y-10 overflow-y-auto bg-slate-50 text-slate-900">
+                
+                <!-- 1. VS Code 설치 -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-indigo-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm">1</span>
+                        <span data-lang-key="caStep1Title">VS Code 설치</span>
+                    </h3>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="font-medium mb-4" data-lang-key="caStep1Desc">AI 코딩을 위한 필수 에디터인 Visual Studio Code를 설치하세요.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <p class="font-bold mb-2 flex items-center gap-2 text-sm">
+                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12-5.373-12-12-12-12 5.373-12 12zm1.5 0c0-5.799 4.701-10.5 10.5-10.5s10.5 4.701 10.5 10.5-4.701 10.5-10.5 10.5-10.5-4.701-10.5-10.5z"/></svg>
+                                    <span data-lang-key="caStep1Common">Windows / Mac (공용)</span>
+                                </p>
+                                <a href="https://code.visualstudio.com/download" target="_blank" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold text-xs hover:bg-indigo-700 shadow-md" data-lang-key="caStep1Download">설치 프로그램 다운로드</a>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <p class="font-bold mb-2 flex items-center gap-2 text-sm">
+                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.96.95-2.11 1.72-3.45 2.32C12.26 23.23 11.23 24 10.15 24c-1.12 0-2.07-.63-3.15-.63-1.08 0-2.12.63-3.15.63-1.08 0-2.11-.77-3.45-1.4-1.34-.6-2.49-1.37-3.45-2.32C-4.14 18.2 -5 15.68-5 12.98c0-2.69.86-5.21 2.58-7.29 1.72-2.08 3.96-3.23 6.72-3.23 1.13 0 2.21.36 3.25.72s2.05.72 2.3.72c.25 0 1.25-.36 2.3-.72s2.12-.72 3.25-.72c2.76 0 5 1.15 6.72 3.23C20.85 7.77 21.71 10.29 21.71 12.98c0 2.7-.86 5.22-2.58 7.3z"/></svg>
+                                    <span data-lang-key="caStep1MacBrew">macOS (Homebrew)</span>
+                                </p>
+                                <div class="bg-slate-900 text-slate-100 p-2 rounded font-mono text-xs border border-slate-700">
+                                    <code>brew install --cask visual-studio-code</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. VS Code 확장 프로그램 -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-emerald-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-sm">2</span>
+                        <span data-lang-key="caStep2Title">Gemini Code Assist 확장 프로그램 설치</span>
+                    </h3>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <p class="font-medium" data-lang-key="caStep2Desc">VS Code 마켓플레이스에서 <b>'Gemini Code Assist'</b> (구 Google Cloud Code)를 검색하여 설치하세요.</p>
+                        <ol class="list-decimal list-inside text-sm space-y-2 text-slate-700">
+                            <li data-lang-key="caStep2Method1">VS Code 왼쪽 메뉴의 <b>Extensions</b> 아이콘 클릭</li>
+                            <li data-lang-key="caStep2Method2"><b>'Gemini Code Assist'</b> 검색 후 <b>Install</b> 클릭</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- 3. Google 계정 로그인 -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-blue-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm">3</span>
+                        <span data-lang-key="caStep3Title">Google Cloud 로그인</span>
+                    </h3>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <ol class="list-decimal list-inside text-sm space-y-2 text-slate-700">
+                            <li data-lang-key="caStep3Method1">VS Code 하단 상태 표시줄의 <b>Gemini Code Assist</b> (또는 Cloud Code) 클릭</li>
+                            <li data-lang-key="caStep3Method2"><b>Sign in to Google Cloud</b> 선택</li>
+                            <li data-lang-key="caStep3Method3">브라우저에서 Google 계정으로 로그인 후 권한 허용</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- 4. 프로젝트 선택 -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-amber-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-amber-600 text-white flex items-center justify-center text-sm">4</span>
+                        <span data-lang-key="caStep4Title">프로젝트 선택</span>
+                    </h3>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <ol class="list-decimal list-inside text-sm space-y-2 text-slate-700">
+                            <li data-lang-key="caStep4Method1">VS Code 하단 상태 표시줄의 <b>no-project</b> 또는 <b>Gemini Code Assist</b> 라고 표시된 부분을 클릭하세요.</li>
+                            <li data-lang-key="caStep4Method2">화면 중앙 상단에 <b>'Select a Google Cloud Project'</b> 선택 메뉴가 나타납니다.</li>
+                            <li data-lang-key="caStep4Method3">목록에서 실습에 사용할 프로젝트 ID를 선택하세요.</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- 5. Gemini 활성화 확인 -->
+                <section>
+                    <h3 class="text-xl font-black flex items-center gap-3 text-violet-600 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-violet-600 text-white flex items-center justify-center text-sm">5</span>
+                        <span data-lang-key="caStep5Title">Gemini Code Assist 활성화 확인</span>
+                    </h3>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="flex items-center gap-2 p-4 bg-slate-50 rounded-xl border border-slate-100">
+                            <p class="font-medium text-slate-700 leading-relaxed text-center w-full" data-lang-key="caStep5Desc">
+                                VS Code 사이드바의 <b>Gemini Code Assist</b> 아이콘을 클릭한 후, Gemini 섹션이 정상적으로 표시되는지 확인하세요.
+                            </p>
+                        </div>
+                        <p class="text-xs text-slate-500 text-center" data-lang-key="caStep5Success">※ 이제 코드 작성 중 실시간 제안을 받거나 사이드바 채팅을 이용할 수 있습니다.</p>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="glossary-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <div class="flex justify-between items-center p-6 border-b border-slate-600 flex-shrink-0">
+                <h2 class="text-2xl font-bold text-white" data-lang-key="glossaryTitle">용어 설명</h2>
+                <button id="glossary-close-button"
+                    class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <div class="p-8 space-y-6 overflow-y-auto">
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-300" data-lang-key="glossaryVibeTitle">자연어 코딩 (Vibe Coding)</h3>
+                    <p class="text-gray-300 mt-1" data-lang-key="glossaryVibeDesc">“AI에게 자연어로 지시하면, AI가 코드를 대신 작성하고 실행해주는 방식"입니다. 마치 내가 원하는 기능을 말하면 직원이 대신 만들어주는 것과 같습니다.</p>
+                </div>
+
+                <hr class="border-slate-700">
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-300" data-lang-key="glossaryIdeTitle">코드 편집 화면 (IDE)</h3>
+                    <p class="text-gray-300 mt-1" data-lang-key="glossaryIdeDesc">Integrated Development Environment의 줄임말로, 코딩, 디버깅, 컴파일, 배포 등 소프트웨어 개발에 필요한 모든 도구를 하나로 통합한 개발 환경입니다.</p>
+                </div>
+
+                <hr class="border-slate-700">
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-300" data-lang-key="glossaryApiTitle">API (Application Programming Interface)</h3>
+                    <p class="text-gray-300 mt-1" data-lang-key="glossaryApiDesc">API는 프로그램끼리 도와주고, 말 잘 통하게 해주는 약속된 언어입니다. 복잡한 걸 몰라도, 메뉴판처럼 버튼 하나로 필요한 걸 부탁할 수 있게 해줍니다.</p>
+                </div>
+
+                <hr class="border-slate-700">
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-300" data-lang-key="glossaryBoilerplateTitle">보일러플레이트</h3>
+                    <p class="text-gray-300 mt-1 text-base" data-lang-key="glossaryBoilerplateDesc">반복적으로 작성해야 하는 기초적인 코드 조각들을 의미합니다.</p>
+                </div>
+
+                <hr class="border-slate-700">
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-300" data-lang-key="glossaryLegacyTitle">레거시 코드</h3>
+                    <p class="text-gray-300 mt-1 text-base" data-lang-key="glossaryLegacyDesc">과거에 작성되어 현재 유지보수 중인 오래된 코드를 의미합니다.</p>
+                </div>
+
+                <hr class="border-slate-700">
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-300" data-lang-key="glossaryDebtTitle">기술 부채</h3>
+                    <p class="text-gray-300 mt-1 text-base" data-lang-key="glossaryDebtDesc">빠른 개발을 위해 선택한 임시방편적인 코드가 나중에 수정 비용으로 돌아오는 것을 의미합니다.</p>
+                </div>
+
+                <hr class="border-slate-700">
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-300" data-lang-key="glossaryCicdTitle">CI/CD</h3>
+                    <p class="text-gray-300 mt-1 text-base" data-lang-key="glossaryCicdDesc">개발한 코드를 자동으로 검사하고 배포하는 자동화 시스템입니다.</p>
+                </div>
+
+                <hr class="border-slate-700">
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-300" data-lang-key="glossaryTtmTitle">TTM (Time-to-Market)</h3>
+                    <p class="text-gray-300 mt-1 text-base" data-lang-key="glossaryTtmDesc">아이디어가 실제 제품으로 출시되기까지 걸리는 시간을 의미합니다.</p>
+                </div>
+
+                <hr class="border-slate-700">
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-300" data-lang-key="glossaryMockupTitle">목업 (Mockup)</h3>
+                    <p class="text-gray-300 mt-1 text-base" data-lang-key="glossaryMockupDesc">실제 제품이 만들어지기 전에 미리 시각적으로 확인해 볼 수 있는 모형입니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="market-overlay" class="modal-overlay">
+        <div class="modal-content" style="max-width: 900px; max-height: 90vh;">
+            <div class="flex justify-between items-center p-6 border-b border-slate-600 flex-shrink-0">
+                <h2 class="text-2xl font-bold text-white" data-lang-key="marketModalTitle">AI 코딩 + 마케팅 적용 대표 사례 모음</h2>
+                <button id="market-close-button"
+                    class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <div class="p-8 space-y-8 overflow-y-auto">
+                <article>
+                    <h3 class="text-xl font-bold text-amber-300" data-lang-key="marketCase1Title">MegazoneCloud – GPT와
+                        함께 만든 나만의 뉴스봇</h3>
+                    <p class="text-sm text-gray-400 mt-1" data-lang-key="marketCase1Subtitle">마케터가 처음 만든 개인화 뉴스 클리핑 서비스
+                        - <a href="https://www.linkedin.com/posts/youmin-lee-2b53592b3_ai-gpt-cursor-activity-7346517840457359361-_0AQ/?utm_source=share&utm_medium=member_ios&rcm=ACoAAAAAfAgBKZf1Hkld6iTyy6ern34nMOJfl_4"
+                            target="_blank"
+                            class="text-blue-400 hover:text-blue-300 underline hover:no-underline transition-colors">Linked
+                            IN Post</a></p>
+                    <p class="text-gray-300 mt-4" data-lang-key="marketCase1Desc">코딩을 몰라도 괜찮습니다.
+                        "이런 뉴스 클리핑 서비스 만들어줘"라고 설명했더니,
+                        실제로 매일 뉴스 수집부터 요약, 이메일 발송까지 자동으로 해주는 시스템이 완성됐습니다.
+
+                        마케터도 이제 혼자서 실제 서비스를 만들 수 있습니다.</p>
+                </article>
+                <hr class="border-slate-700">
+                <article>
+                    <h3 class="text-xl font-bold text-amber-300" data-lang-key="marketCase2Title">Starbucks – AI로 고객 마음
+                        사로잡다</h3>
+                    <p class="text-sm text-gray-400 mt-1" data-lang-key="marketCase2Subtitle">개인화 추천 마케팅의 정석</p>
+                    <p class="text-gray-300 mt-4" data-lang-key="marketCase2Desc">스타벅스는 AI 추천 알고리즘을 활용, 고객의 구매 이력과 날씨 등
+                        외부 데이터를 결합해 개인 맞춤형 음료를 제안했다. 그
+                        결과 이메일 오픈율은 3배 상승했으며, 앱 이용률 또한 크게 증가하는 성과를 거뒀다.</p>
+                </article>
+                <hr class="border-slate-700">
+                <article>
+                    <h3 class="text-xl font-bold text-amber-300" data-lang-key="marketCase3Title">BMW – 생성형 AI, 광고계에 새
+                        바람</h3>
+                    <p class="text-sm text-gray-400 mt-1" data-lang-key="marketCase3Subtitle">타겟 맞춤형 비주얼 광고 자동 생성</p>
+                    <p class="text-gray-300 mt-4" data-lang-key="marketCase3Desc">BMW는 생성형 AI 기술을 광고 제작에 도입했다. 고객 타겟에 맞춰
+                        자동차 이미지와 광고 카피를 자동으로 생성하는 캠페인을
+                        통해 소셜미디어에서의 전환율을 2배 이상 끌어올리는 데 성공했다.</p>
+                </article>
+                <hr class="border-slate-700">
+                <article>
+                    <h3 class="text-xl font-bold text-amber-300" data-lang-key="marketCase4Title">Nutella – 세상에 단 하나뿐인
+                        700만 개의 디자인</h3>
+                    <p class="text-sm text-gray-400 mt-1" data-lang-key="marketCase4Subtitle">알고리즘이 만든 패키징, 완판 신화 쓰다</p>
+                    <p class="text-gray-300 mt-4" data-lang-key="marketCase4Desc">누텔라는 AI 알고리즘을 통해 700만 개가 넘는 각기 다른 디자인의
+                        한정판 패키지를 선보였다. 이 독특한 시도는 완판으로
+                        이어졌을 뿐만 아니라, SNS상에서 엄청난 바이럴을 유도하며 브랜드 인지도를 높였다.</p>
+                </article>
+                <hr class="border-slate-700">
+                <article>
+                    <h3 class="text-xl font-bold text-amber-300" data-lang-key="marketCase5Title">L'Oréal – AI가 글로벌 마케팅
+                        속도 높여</h3>
+                    <p class="text-sm text-gray-400 mt-1" data-lang-key="marketCase5Subtitle">자연어처리(NLP)로 콘텐츠 제작 시간 80%
+                        단축</p>
+                    <p class="text-gray-300 mt-4" data-lang-key="marketCase5Desc">로레알은 AI 자연어처리 기술을 도입, 전 세계 수천 개 제품의
+                        마케팅 문구를 자동으로 생성하고 번역했다. 이를 통해 글로벌
+                        제품 론칭 속도를 획기적으로 개선하고 콘텐츠 제작 시간을 80%나 단축했다.</p>
+                </article>
+                <hr class="border-slate-700">
+                <blockquote class="bg-slate-800 border-l-4 border-amber-400 p-4 rounded-r-lg">
+                    <p class="font-semibold italic text-gray-300" data-lang-key="marketQuote">"AI는 마케터의 반복 작업을 대체하거나
+                        강화함으로써, 창의적인 전략에 더 집중할 수 있는
+                        실행력을 높여줍니다."</p>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+    <div id="h-company-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 1000px; max-height: 95vh;">
+            <div class="flex justify-between items-center p-4 border-b border-slate-600 flex-shrink-0">
+                <h2 class="text-xl font-bold text-white" data-lang-key="hModalTitle">H사 AI Code Assistant 도입 성과</h2>
+                <button id="h-company-close-button"
+                    class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <div class="p-6 overflow-hidden">
+                <p class="text-center text-sky-100 mb-6" data-lang-key="hModalSubtitle">AI 도입을 통한 개발 프로세스 혁신 및 생산성 향상
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-bold text-amber-300 mb-3 text-center" data-lang-key="hModalCoreTitle">핵심
+                            성과</h3>
+
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-4 p-4 bg-slate-800/50 rounded-lg">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-semibold" data-lang-key="hModalCore1Title">AI 개발 표준 수립
+                                    </h4>
+                                    <p class="text-gray-300 text-sm" data-lang-key="hModalCore1Desc">체계적인 AI 코딩 가이드라인 구축
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-4 bg-slate-800/50 rounded-lg">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-semibold" data-lang-key="hModalCore2Title">개발자 역량 강화</h4>
+                                    <p class="text-gray-300 text-sm" data-lang-key="hModalCore2Desc">AI 도구 활용 능력 향상</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-4 bg-slate-800/50 rounded-lg">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-semibold" data-lang-key="hModalCore3Title">Code
+                                        Development</h4>
+                                    <p class="text-gray-300 text-sm" data-lang-key="hModalCore3Desc">주요 사업 레퍼런스 확보</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-bold text-amber-300 mb-3 text-center"
+                            data-lang-key="hModalEffectsTitle">기대 효과</h3>
+
+                        <div class="mb-4">
+                            <div
+                                class="flex justify-around items-center text-center text-xs font-semibold text-slate-300 mb-3">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span data-lang-key="hModalStatus1">기술 검증 완료</span>
+                                </span>
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span data-lang-key="hModalStatus2">가이드 작성 완료</span>
+                                </span>
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span data-lang-key="hModalStatus3">교육 진행 완료</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-900/30 p-6 rounded-lg border border-blue-700/50">
+                            <div class="space-y-2">
+                                <div class="grid grid-cols-3 items-center text-center text-xs text-slate-300 mb-3">
+                                    <span class="font-semibold" data-lang-key="hModalTableCat">항목</span>
+                                    <span class="font-semibold" data-lang-key="hModalTableBefore">수동 개발</span>
+                                    <span class="text-amber-300 font-semibold" data-lang-key="hModalTableAfter">AI
+                                        도입</span>
+                                </div>
+                                <div
+                                    class="p-3 bg-blue-800/50 rounded-lg grid grid-cols-3 items-center text-center text-sm shadow-sm border border-blue-700/30">
+                                    <span class="font-semibold text-slate-200" data-lang-key="hModalTask1">API 개발</span>
+                                    <span class="text-slate-300">1~4시간</span>
+                                    <div
+                                        class="bg-amber-400/20 text-amber-300 font-bold rounded-md py-1 border border-amber-400/30">
+                                        20~30분</div>
+                                </div>
+                                <div
+                                    class="p-3 bg-blue-800/50 rounded-lg grid grid-cols-3 items-center text-center text-sm shadow-sm border border-blue-700/30">
+                                    <span class="font-semibold text-slate-200" data-lang-key="hModalTask2">핵심 기능</span>
+                                    <span class="text-slate-300">0.5~2시간</span>
+                                    <div
+                                        class="bg-amber-400/20 text-amber-300 font-bold rounded-md py-1 border border-amber-400/30">
+                                        20~30분</div>
+                                </div>
+                                <div
+                                    class="p-3 bg-blue-800/50 rounded-lg grid grid-cols-3 items-center text-center text-sm shadow-sm border border-blue-700/30">
+                                    <span class="font-semibold text-slate-200" data-lang-key="hModalTask3">화면 개발</span>
+                                    <span class="text-slate-300">1~4시간</span>
+                                    <div
+                                        class="bg-amber-400/20 text-amber-300 font-bold rounded-md py-1 border border-amber-400/30">
+                                        40분</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="mt-4 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white p-4 rounded-xl text-center shadow-2xl border-2 border-orange-300/40 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-orange-400/30 to-pink-400/30 blur-sm"></div>
+                    <div class="relative flex items-center justify-center">
+                        <svg class="w-10 h-10 mr-3 text-yellow-200" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="6" stroke-width="2" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8v4l3 1.5" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                d="M2 12h3M19 12h3M12 2v3M12 19v3" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M20 3v4M18 5l2 2 2-2" />
+                        </svg>
+                        <div class="text-left">
+                            <p class="font-black text-xl mb-1 text-yellow-100 drop-shadow-lg"
+                                data-lang-key="hModalResult">개발 시간 30% 이상 단축</p>
+                            <p class="text-sm font-semibold text-orange-100 drop-shadow"
+                                data-lang-key="hModalResultDesc">AI 도입으로 개발 생산성 극대화</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            ko: {
+                mainTitle: "누구나 할 수 있는 AI 활용",
+                mainSubtitle: "처음 해보는 사람도 쉽게 따라 하는 AI 코딩",
+                leaderQuote: `"나도 해봤어!"<br>"처음인데도 금방 만들었어요."`,
+                leaderMessage: "이런 경험을 직접 해보실 수 있습니다.",
+                benefit1Title: "처음에도 부담 없이 시작",
+                benefit1Desc: "복잡해 보이지만 실제로는 말하듯이 지시하면 되는 간단한 방법입니다.",
+                benefit2Title: "작은 시도도 바로 눈에 보이는 결과",
+                benefit2Desc: "간단한 요청만으로도 실제 동작하는 결과물을 바로 확인할 수 있어요.",
+                benefit3Title: "누구나 직접 해볼 수 있는 성취감",
+                benefit3Desc: `"나도 할 수 있구나!"라는 자신감과 함께 새로운 가능성을 발견하게 됩니다.`,
+                
+                // Page 2: 기존 개발의 문제점
+                page2Title: "기존 개발의 문제점",
+                page2Subtitle: "우리를 멈추게 하는 개발의 장애물들",
+                page2Card1Title: "단순 반복의 늪",
+                page2Card1Item1: "보일러플레이트",
+                page2Card1Item2: "테스트/문서",
+                page2Card1Item3: "코드 리뷰",
+                page2Card1Summary: "생산성 저하의 주범",
+                page2Card2Title: "코드 해석의 벽",
+                page2Card2Item1: "거대 레거시",
+                page2Card2Item2: "파편화된 구조",
+                page2Card2Item3: "기술 스택 과잉",
+                page2Card2Summary: "인지 능력의 한계",
+                page2Card3Title: "딜리버리 지연",
+                page2Card3Item1: "인력 부족",
+                page2Card3Item2: "유지보수 비용",
+                page2Card3Item3: "출시 지연",
+                page2Card3Summary: "비즈니스 속도 정체",
+                page2Card4Title: "역할 과부하",
+                page2Card4Item1: "CI/CD 관리",
+                page2Card4Item2: "인프라 설정",
+                page2Card4Item3: "보안/모니터링",
+                page2Card4Summary: "핵심 가치 집중 저하",
+
+                // Page 3: Vibe Coding 소개
+                page3Title: "Vibe Coding 소개",
+                page3Subtitle: "의도와 분위기를 AI에게 전달하여 소프트웨어를 완성하는 차세대 개발 방식",
+                page3Section1Title: "Vibe Coding 이란?",
+                page3Section1Desc: "Vibe Coding은 복잡한 문법이나 로직에 얽매이지 않고, 개발자가 구현하고자 하는 의도(Intent)와 분위기(Vibe)를 AI에게 전달하여 소프트웨어를 완성하는 차세대 개발 방식입니다.",
+                page3Section2Title: "Vibe Coding의 장점",
+                page3Section2Item1: "자연어 중심의 의도 전달",
+                page3Section2Item2: "AI의 자율적 코드 생성 및 실행",
+                page3Section2Item3: "개발 진입 장벽의 붕괴",
+                page3Section2Item4: "초고속 프로토타이핑",
+                page3Section3Title: "Vibe Coding의 원칙",
+                page3Section3Item1: "작은 단위로 구현해야 정확도가 올라갑나다.",
+                page3Section3Item2: "내가 만들고자 하는 기능을 AI에게 전달합니다.",
+                page3Section3Item3: "테스트 코드 작성을 통해 잘 구현되었는지 확인합니다.",
+
+                // Page 4: 기업에서 왜 Vibe Coding 이 필요한가
+                page4Title: "기업에서 왜 Vibe Coding 이 필요한가",
+                page4Subtitle: "비즈니스 민첩성과 리소스 최적화",
+                page4Section1Title: "기술 부채 해결",
+                page4Section1Item1: "레거시 분석 자동화",
+                page4Section1Item2: "현대적 리팩터링",
+                page4Section1Summary: "수개월 소요 작업을 며칠 만에",
+                page4Section2Title: "초고속 제품 출시",
+                page4Section2Item1: "Context Switching 최소화",
+                page4Section2Item2: "1인 풀스택 개발 가능",
+                page4Section2Summary: "TTM 80% 이상 단축",
+                page4Section3Title: "협업 장벽 제거",
+                page4Section3Item1: "현업 전문가 직접 참여",
+                page4Section3Item2: "실시간 Mockup 생성",
+                page4Section3Summary: "기획 재작업 비용 최소화",
+
+                // Page 5: Gemini CLI
+                page5Title: "Gemini CLI",
+                page5Subtitle: "터미널 기반의 강력한 AI 에이전트",
+                page5Section1Title: "Gemini CLI 란?",
+                page5Section1Desc: "터미널 환경에서 Google의 강력한 AI 모델과 직접 대화하고 텍스트 생성, 코드 분석, 시스템 자동화를 수행할 수 있는 명령어 라인 인터페이스 도구입니다.",
+                page5Section2Title: "Gemini CLI의 특별한 기능",
+                page5Card1Title: "프롬프트 기반 Spec 설계",
+                page5Card1Desc: "사용자의 막연한 아이디어를 체계적인 개발 문서(요구사항, 설계안)로 자동 변환합니다.",
+                page5Card2Title: "멀티파일 코드 생성",
+                page5Card2Desc: "하나의 프롬프트로 여러 파일을 포함한 전체 프로젝트 구조를 한 번에 생성합니다.",
+                page5Card3Title: "시스템 인스트럭션 제어",
+                page5Card3Desc: ".txt 또는 .md 파일을 통해 AI의 작업 방식과 코딩 표준을 강제로 스티어링합니다.",
+                page5Card4Title: "터미널 통합 자동화",
+                page5Card4Desc: "환경 구축(npm install 등)부터 실시간 디버깅까지 터미널과 직접 상호작용합니다.",
+                page5Card5Title: "지능형 컨텍스트 참조",
+                page5Card5Desc: "@file, #codebase 지시어로 파일 시스템 전체 맥락을 이해한 답변을 제공합니다.",
+                page5Card6Title: "배포 자동화 워크플로우",
+                page5Card6Desc: "로컬에서 완성된 코드를 Firebase나 Cloud Run 등으로 즉시 배포하는 스크립트를 실행합니다.",
+                page5Card13Title: "직접 수행하는 AI",
+                page5Card13Desc: "AI가 코드 수정, 테스트 실행, 프로젝트 분석을 직접 수행하는 '에이전트' 역할을 합니다.",
+
+                // Page 6: Google Code Assist
+                page6Title: "Google Code Assist",
+                page6Subtitle: "IDE 기반의 지능형 코딩 파트너",
+                page6Section1Title: "Google Code Assist 란?",
+                page6Section1Desc: "VS Code, JetBrains 등 즐겨 쓰는 IDE에서 직접 동작하며, 대규모 코드베이스와 클라우드 환경에 최적화된 개발 지원을 제공하는 AI 보조 도구입니다.",
+                page6Section2Title: "Code Assist의 주요 기능",
+                page6Card1Title: "실시간 AI 코드 완성",
+                page6Card1Desc: "코드 작성 중 AI가 다음 코드를 예측하여 제안하며, 자연어 주석만으로 기능을 구현합니다.",
+                page6Card2Title: "코드 이해 및 리팩터링",
+                page6Card2Desc: "복잡한 로직을 설명하고 성능 개선, 가독성 향상을 위한 수정안을 즉시 제시합니다.",
+                page6Card3Title: "클라우드 최적화 지원",
+                page6Card3Desc: "Google Cloud 서비스 연동 코드 및 인프라(IaC) 구성을 모범 사례 기반으로 생성합니다.",
+                page6Card4Title: "엔터프라이즈 보안 및 관리",
+                page6Card4Desc: "조직 내 코드 스타일 준수, API 키 보호 등 기업 환경에 필수적인 거버넌스를 제공합니다.",
+                page6SummaryTitle: "보조하는 AI",
+                page6SummaryDesc: "개발자가 중심이 되고, AI가 실시간으로 제안 및 리뷰를 수행하는 '파트너' 역할을 합니다.",
+
+                // Page 7: 핵심 차이점 요약 (New)
+                page7Title: "핵심 차이점 요약",
+                page7Subtitle: "나에게 맞는 AI 도구 선택하기",
+                page7CliRole: "자동화 & 실행 에이전트",
+                page7CliFeat1: "대규모 구조 자동 생성",
+                page7CliFeat2: "터미널 명령 직접 실행",
+                page7CliFeat3: "DevOps 및 CI/CD 통합",
+                page7CliKeyword: '"AI가 수행"',
+                page7AsstRole: "실시간 코딩 보조 파트너",
+                page7AsstFeat1: "정교한 코드 구현 및 리뷰",
+                page7AsstFeat2: "IDE 내 실시간 인라인 제안",
+                page7AsstFeat3: "조직 보안 정책 준수",
+                page7AsstKeyword: '"AI가 보조"',
+                page7TableCol1: "비교 항목",
+                page7TableRow1Col1: "사용 환경",
+                page7TableRow1Col2: "터미널 (Terminal)",
+                page7TableRow1Col3: "IDE (Extension)",
+                page7TableRow2Col1: "사용자",
+                page7TableRow2Col2: "자동화 지향 개발자",
+                page7TableRow2Col3: "모든 기업 개발팀",
+                page7TableRow3Col1: "강점",
+                page7TableRow3Col2: "멀티파일 프로젝트 빌드",
+                page7TableRow3Col3: "세밀한 코드 최적화",
+
+                // Page 8: Vibe Coding 실습 (Updated)
+                page8Title: "Vibe Coding 실습",
+                page8Subtitle: "직접 경험해 보세요!",
+                page8Practice1Title: "이력서 자동 분류",
+                page8Practice1Desc: "hr_test 디렉토리",
+                page8Practice2Title: "카드 사용 내역 분류",
+                page8Practice2Desc: "corp_card 디렉토리",
+                page8Practice3Title: "마케팅 및 홍보 웹 페이지",
+                page8Practice3Desc: "web_page 디렉토리",
+
+                page8InstallBtn: "Gemini CLI 설치 가이드",
+                page8CodeAssistBtn: "Code Assist 설치 가이드",
+                installModalTitle: "Gemini CLI 설치 가이드",
+                codeAssistModalTitle: "Code Assist 설치 가이드",
+
+                // Gemini CLI Installation (KO)
+                installStep1Title: "Google Cloud CLI 설치",
+                installStep1Win: "Windows",
+                installStep1Mac: "macOS",
+                installStep1MacBrew: "Homebrew 사용 시:",
+                installStep1Direct: "직접 다운로드 설치 가이드",
+                installStep2Title: "Node.js 설치 (LTS 권장)",
+                installStep2Win: "Windows",
+                installStep2Mac: "macOS",
+                installStep3Title: "Gemini CLI 설치",
+                installStep3Desc: "터미널(또는 CMD/PowerShell)에서 아래 명령어를 실행하세요.",
+                installStep3Tip: "※ Mac/Linux에서 권한 오류 발생 시 앞에 <code>sudo </code>를 붙여주세요.",
+                installStep4Title: "환경 설정 및 프로젝트 선택",
+                installStep4Desc1: "1) Google Cloud 프로젝트 ID 확인",
+                installStep4Console: "Google Cloud Console의 대시보드에서 '프로젝트 ID'를 복사하세요.",
+                installStep4GcpLink: "GCP 콘솔 대시보드 바로가기",
+                installStep4Desc2: "2) .env 파일 생성 및 ID 입력",
+                installStep4EnvTip: "실습 프로젝트의 <b>루트(최상위) 디렉토리</b>에 <code>.env</code> 파일을 만들고 복사한 ID를 넣으세요.",
+                installStep4Auth: "3) Google Cloud 인증",
+                installStep5Title: "VS Code 설치",
+                installStep5Desc: "AI 코딩을 위한 필수 에디터인 Visual Studio Code를 설치하세요.",
+                installStep5Common: "Windows/Mac 공용",
+                installStep5Download: "VS Code 다운로드",
+                installStep5MacBrew: "macOS (Homebrew)",
+                installStep6Title: "Gemini CLI Companion 설치",
+                installStep6Desc: "VS Code에서 에이전트를 더 효율적으로 사용하기 위한 확장 프로그램을 설치합니다.",
+                installStep6MethodTitle: "설치 방법:",
+                installStep6Method1: "VS Code 왼쪽 메뉴의 <b>Extensions</b>(확장) 아이콘 클릭",
+                installStep6Method2: "검색창에 <b>'Gemini CLI Companion'</b> 입력",
+                installStep6Method3: "파란색 <b>Install</b> 버튼 클릭",
+                installStep7Title: "Gemini 실행 및 인증",
+                installStep7Desc: "이제 모든 준비가 끝났습니다! 터미널에서 Gemini를 실행하고 인증을 완료하세요.",
+                installStep7MethodTitle: "실행 및 인증 단계:",
+                installStep7Method1: "VS Code 상단 메뉴에서 <b>Terminal</b> > <b>New Terminal</b> 선택",
+                installStep7Method2: "터미널에 <code>gemini</code> 입력 후 엔터",
+                installStep7Method3: "Gemini 프롬프트가 뜨면 <code>/auth</code>를 입력하고 엔터",
+                installStep7Method4: "화살표 키를 사용하여 <b>Vertex AI</b>를 선택하고 엔터",
+                installStep7Method5: "자동으로 열리는 웹 브라우저에서 Google 계정으로 <b>로그인</b>",
+                installStep7Success: "※ 로그인이 완료되면 이제 대화와 코딩 실습을 시작할 수 있습니다!",
+
+                // Code Assist Installation (KO)
+                caStep1Title: "VS Code 설치",
+                caStep1Desc: "AI 코딩을 위한 필수 에디터인 Visual Studio Code를 설치하세요.",
+                caStep1Common: "Windows / Mac (공용)",
+                caStep1Download: "설치 프로그램 다운로드",
+                caStep1MacBrew: "macOS (Homebrew)",
+                caStep2Title: "Gemini Code Assist 확장 프로그램 설치",
+                caStep2Desc: "VS Code 마켓플레이스에서 <b>'Gemini Code Assist'</b> (구 Google Cloud Code)를 검색하여 설치하세요.",
+                caStep2Method1: "VS Code 왼쪽 메뉴의 <b>Extensions</b> 아이콘 클릭",
+                caStep2Method2: "<b>'Gemini Code Assist'</b> 검색 후 <b>Install</b> 클릭",
+                caStep3Title: "Google Cloud 로그인",
+                caStep3Method1: "VS Code 하단 상태 표시줄의 <b>Gemini Code Assist</b> (또는 Cloud Code) 클릭",
+                caStep3Method2: "<b>Sign in to Google Cloud</b> 선택",
+                caStep3Method3: "브라우저에서 Google 계정으로 로그인 후 권한 허용",
+                caStep4Title: "프로젝트 선택",
+                caStep4Method1: "VS Code 하단 상태 표시줄의 <b>no-project</b> 또는 <b>Gemini Code Assist</b> 라고 표시된 부분을 클릭하세요.",
+                caStep4Method2: "화면 중앙 상단에 <b>'Select a Google Cloud Project'</b> 선택 메뉴가 나타납니다.",
+                caStep4Method3: "목록에서 실습에 사용할 프로젝트 ID를 선택하세요.",
+                caStep5Title: "Gemini Code Assist 활성화 확인",
+                caStep5Desc: "VS Code 사이드바의 <b>Gemini Code Assist</b> 아이콘을 클릭한 후, Gemini 섹션이 정상적으로 표시되는지 확인하세요.",
+                caStep5Success: "※ 이제 코드 작성 중 실시간 제안을 받거나 사이드바 채팅을 이용할 수 있습니다.",
+
+                prevBtn: "← 이전",
+                nextBtn: "다음 →",
+                glossaryTitle: "용어 설명",
+                glossaryVibeTitle: "자연어 코딩 (Vibe Coding)",
+                glossaryVibeDesc: "“AI에게 자연어로 지시하면, AI가 코드를 대신 작성하고 실행해주는 방식”입니다. 마치 내가 원하는 기능을 말하면 직원이 대신 만들어주는 것과 같습니다.",
+                glossaryIdeTitle: "코드 편집 화면 (IDE)",
+                glossaryIdeDesc: "AI와 함께 작업할 수 있는 편리한 화면입니다. 마치 워드나 파워포인트처럼 사용하기 쉽게 만들어진 작업 공간이라고 생각하시면 됩니다. 복잡한 기능들이 모두 한 곳에 정리되어 있어요.",
+                glossaryApiTitle: "API (Application Programming Interface)",
+                glossaryApiDesc: "API는 프로그램끼리 도와주고, 말 잘 통하게 해주는 약속된 언어입니다. 복잡한 걸 몰라도, 메뉴판처럼 버튼 하나로 필요한 걸 부탁할 수 있게 해줍니다.",
+                glossaryBoilerplateTitle: "보일러플레이트",
+                glossaryBoilerplateDesc: "반복적으로 작성해야 하는 기초적인 코드 조각들을 의미합니다.",
+                glossaryLegacyTitle: "레거시 코드",
+                glossaryLegacyDesc: "과거에 작성되어 현재 유지보수 중인 오래된 코드를 의미합니다.",
+                glossaryDebtTitle: "기술 부채",
+                glossaryDebtDesc: "빠른 개발을 위해 선택한 임시방편적인 코드가 나중에 수정 비용으로 돌아오는 것을 의미합니다.",
+                glossaryCicdTitle: "CI/CD",
+                glossaryCicdDesc: "개발한 코드를 자동으로 검사하고 배포하는 자동화 시스템입니다.",
+                glossaryTtmTitle: "TTM (Time-to-Market)",
+                glossaryTtmDesc: "아이디어가 실제 제품으로 출시되기까지 걸리는 시간을 의미합니다.",
+                glossaryMockupTitle: "목업 (Mockup)",
+                glossaryMockupDesc: "실제 제품이 만들어지기 전에 미리 시각적으로 확인해 볼 수 있는 모형입니다.",
+                marketModalTitle: "AI 코딩 + 마케팅 적용 대표 사례 모음",
+                marketCase1Title: "MegazoneCloud – GPT와 함께 만든 나만의 뉴스봇",
+                marketCase1Subtitle: "마케터가 처음 만든 개인화 뉴스 클리핑 서비스 - ",
+                marketCase1Desc: `코딩을 몰라도 괜찮습니다. "이런 뉴스 클리핑 서비스 만들어줘"라고 설명했더니, 실제로 매일 뉴스 수집부터 요약, 이메일 발송까지 자동으로 해주는 시스템이 완성됐습니다. 마케터도 이제 혼자서 실제 서비스를 만들 수 있습니다.`,
+                marketCase2Title: "Starbucks – AI로 고객 마음 사로잡다",
+                marketCase2Subtitle: "개인화 추천 마케팅의 정석",
+                marketCase2Desc: "스타벅스는 AI 추천 알고리즘을 활용, 고객의 구매 이력과 날씨 등 외부 데이터를 결합해 개인 맞춤형 음료를 제안했다. 그 결과 이메일 오픈율은 3배 상승했으며, 앱 이용률 또한 크게 증가하는 성과를 거뒀다.",
+                marketCase3Title: "BMW – 생성형 AI, 광고계에 새 바람",
+                marketCase3Subtitle: "타겟 맞춤형 비주얼 광고 자동 생성",
+                marketCase3Desc: "BMW는 생성형 AI 기술을 광고 제작에 도입했다. 고객 타겟에 맞춰 자동차 이미지와 광고 카피를 자동으로 생성하는 캠페인을 통해 소셜미디어에서의 전환율을 2배 이상 끌어올리는 데 성공했다.",
+                marketCase4Title: "Nutella – 세상에 단 하나뿐인 700만 개의 디자인",
+                marketCase4Subtitle: "알고리즘이 만든 패키징, 완판 신화 쓰다",
+                marketCase4Desc: "누텔라는 AI 알고리즘을 통해 700만 개가 넘는 각기 다른 디자인의 한정판 패키지를 선보였다. 이 독특한 시도는 완판으로 이어졌을 뿐만 아니라, SNS상에서 엄청난 바이럴을 유도하며 브랜드 인지도를 높였다.",
+                marketCase5Title: "L'Oréal – AI가 글로벌 마케팅 속도 높여",
+                marketCase5Subtitle: "자연어처리(NLP)로 콘텐츠 제작 시간 80% 단축",
+                marketCase5Desc: "로레알은 AI 자연어처리 기술을 도입, 전 세계 수천 개 제품의 마케팅 문구를 자동으로 생성하고 번역했다. 이를 통해 글로벌 제품 론칭 속도를 획기적으로 개선하고 콘텐츠 제작 시간을 80%나 단축했다.",
+                marketQuote: `"AI는 마케터의 반복 작업을 대체하거나 강화함으로써, 창의적인 전략에 더 집중할 수 있는 실행력을 높여줍니다."`,
+                hModalTitle: "H사 AI Code Assistant 도입 성과",
+                hModalSubtitle: "AI 도입을 통한 개발 프로세스 혁신 및 생산성 향상",
+                hModalCoreTitle: "핵심 성과",
+                hModalCore1Title: "AI 개발 표준 수립",
+                hModalCore1Desc: "체계적인 AI 코딩 가이드라인 구축",
+                hModalCore2Title: "개발자 역량 강화",
+                hModalCore2Desc: "AI 도구 활용 능력 향상",
+                hModalCore3Title: "Code Development",
+                hModalCore3Desc: "주요 사업 레퍼런스 확보",
+                hModalEffectsTitle: "기대 효과",
+                hModalStatus1: "기술 검증 완료",
+                hModalStatus2: "가이드 작성 완료",
+                hModalStatus3: "교육 진행 완료",
+                hModalTableCat: "항목",
+                hModalTableBefore: "수동 개발",
+                hModalTableAfter: "AI 도입",
+                hModalTask1: "API 개발",
+                hModalTask2: "핵심 기능",
+                hModalTask3: "화면 개발",
+                hModalResult: "개발 시간 30% 이상 단축",
+                hModalResultDesc: "AI 도입으로 개발 생산성 극대화",
+                chatTitle: "AI 코드 추천",
+                chatWelcome: `안녕하세요! 어떤 코드가 궁금하신가요? 예를 들어 "자바스크립트로 버튼 클릭 이벤트 처리하는 방법 알려줘" 와 같이 질문해주세요.`,
+                chatPlaceholder: "메시지를 입력하세요..."
+            },
+            en: {
+                mainTitle: "AI for Everyone",
+                mainSubtitle: "Easy AI Coding for First-Time Users",
+                leaderQuote: `"I did it too!"<br>"I made this even though it's my first time."`,
+                leaderMessage: "You can experience this yourself.",
+                benefit1Title: "Easy Start for Beginners",
+                benefit1Desc: "It looks complex, but it's actually as simple as giving instructions in plain language.",
+                benefit2Title: "Immediate Visible Results",
+                benefit2Desc: "Even simple requests can produce working results that you can see right away.",
+                benefit3Title: "Achievement Anyone Can Experience",
+                benefit3Desc: "Discover new possibilities with the confidence that 'I can do this too!'",
+                
+                // Page 2: Problems of Traditional Development
+                page2Title: "Traditional Dev Problems",
+                page2Subtitle: "Barriers that slow us down",
+                page2Card1Title: "Repetitive Tasks",
+                page2Card1Item1: "Boilerplate",
+                page2Card1Item2: "Tests/Docs",
+                page2Card1Item3: "Code Review",
+                page2Card1Summary: "Productivity Killer",
+                page2Card2Title: "Complexity Wall",
+                page2Card2Item1: "Huge Legacy",
+                page2Card2Item2: "Fragmented",
+                page2Card2Item3: "Tech Overload",
+                page2Card2Summary: "Cognitive Limits",
+                page2Card3Title: "Delivery Gap",
+                page2Card3Item1: "No Manpower",
+                page2Card3Item2: "High Costs",
+                page2Card3Item3: "Launch Delay",
+                page2Card3Summary: "Business Stagnation",
+                page2Card4Title: "Role Overload",
+                page2Card4Item1: "CI/CD Management",
+                page2Card4Item2: "Infra Setup",
+                page2Card4Item3: "Security/Ops",
+                page2Card4Summary: "Focus Loss",
+
+                // Page 3: Introduction to Vibe Coding
+                page3Title: "Introduction to Vibe Coding",
+                page3Subtitle: "Next-gen development by conveying intent and vibe to AI",
+                page3Section1Title: "What is Vibe Coding?",
+                page3Section1Desc: "Vibe Coding is a next-generation development method where developers complete software by conveying their implementation intent and 'vibe' to AI, without being bound by complex syntax or logic.",
+                page3Section2Title: "Advantages of Vibe Coding",
+                page3Section2Item1: "Natural language-centered intent delivery",
+                page3Section2Item2: "Autonomous code generation and execution by AI",
+                page3Section2Item3: "Collapse of development entry barriers",
+                page3Section2Item4: "Ultra-fast prototyping",
+                page3Section3Title: "Principles of Vibe Coding",
+                page3Section3Item1: "Implementing in small units increases accuracy.",
+                page3Section3Item2: "Convey the desired function to the AI.",
+                page3Section3Item3: "Verify implementation through test code writing.",
+
+                // Page 4: Why Enterprise Needs Vibe Coding
+                page4Title: "Why Enterprise Needs Vibe Coding",
+                page4Subtitle: "Business Agility and Resource Optimization",
+                page4Section1Title: "Tech Debt Solution",
+                page4Section1Item1: "Auto Legacy Analysis",
+                page4Section1Item2: "Modern Refactoring",
+                page4Section1Summary: "Months of work in days",
+                page4Section2Title: "Fast Time-to-Market",
+                page4Section2Item1: "Minimal Context Switching",
+                page4Section2Item2: "Solo Full-stack Dev",
+                page4Section2Summary: "Over 80% TTM Reduction",
+                page4Section3Title: "Break Collaboration Barriers",
+                page4Section3Item1: "Direct Expert Participation",
+                page4Section3Item2: "Real-time Mockup Gen",
+                page4Section3Summary: "Minimal Rework Costs",
+                page4Section4Title: "Traditional vs Vibe Coding",
+                page4TableRow1Col1: "Project Setup",
+                page4TableRow1Col2: "2-3 Days (Config/Boilerplate)",
+                page4TableRow1Col3: "10 Mins (AI Scaffolding)",
+                page4TableRow2Col1: "Code Review",
+                page4TableRow2Col2: "Manual Inspection (Bottleneck)",
+                page4TableRow2Col3: "AI Validation + Intent Check",
+                page4TableRow3Col1: "Talent Mix",
+                page4TableRow3Col2: "Language-specific Experts",
+                page4TableRow3Col3: "Problem-solving & Design",
+                page4TableRow4Col1: "Documentation",
+                page4TableRow4Col2: "Post-dev (Often missing)",
+                page4TableRow4Col3: "Real-time Auto-generation",
+
+                // Page 5: Gemini CLI
+                page5Title: "Gemini CLI",
+                page5Subtitle: "Terminal-based Powerful AI Agent",
+                page5Section1Title: "What is Gemini CLI?",
+                page5Section1Desc: "A command-line interface tool that lets you interact directly with Google's powerful AI models in a terminal environment to generate text, analyze code, and perform system automation.",
+                page5Section2Title: "Special Features of Gemini CLI",
+                page5Card1Title: "Spec-Driven Prompting",
+                page5Card1Desc: "Automatically converts vague ideas into structured development documents (requirements, designs).",
+                page5Card2Title: "Multi-file Code Generation",
+                page5Card2Desc: "Generates entire project structures with multiple files from a single prompt.",
+                page5Card3Title: "System Instruction Control",
+                page5Card3Desc: "Forcefully steers AI work style and coding standards using .txt or .md files.",
+                page5Card4Title: "Terminal Integration Automation",
+                page5Card4Desc: "Directly interacts with the terminal from environment setup (npm install) to real-time debugging.",
+                page5Card5Title: "Contextual Awareness",
+                page5Card5Desc: "Provides answers understanding the full file system context using @file, #codebase directives.",
+                page5Card6Title: "Deployment Workflow",
+                page5Card6Desc: "Executes scripts to immediately deploy completed code to Firebase, Cloud Run, etc.",
+                page5Card13Title: "Direct Execution AI",
+                page5Card13Desc: "Acts as an 'agent' that directly performs code modification, test execution, and project analysis.",
+
+                // Page 6: Google Code Assist
+                page6Title: "Google Code Assist",
+                page6Subtitle: "IDE-based Intelligent Coding Partner",
+                page6Section1Title: "What is Google Code Assist?",
+                page6Section1Desc: "An AI assistant that works directly in your favorite IDEs (VS Code, JetBrains) and is optimized for large codebases and cloud environments.",
+                page6Section2Title: "Key Features of Code Assist",
+                page6Card1Title: "Real-time AI Code Completion",
+                page6Card1Desc: "Predicts and suggests the next code while writing, and implements features from natural language comments.",
+                page6Card2Title: "Code Understanding & Refactoring",
+                page6Card2Desc: "Explains complex logic and immediately suggests fixes for performance and readability.",
+                page6Card3Title: "Cloud Optimization Support",
+                page6Card3Desc: "Generates Google Cloud integration code and Infra-as-Code (IaC) based on best practices.",
+                page6Card4Title: "Enterprise Security & Management",
+                page6Card4Desc: "Provides essential governance for enterprise environments, including code style compliance and API key protection.",
+                page6SummaryTitle: "Assisting AI",
+                page6SummaryDesc: "A partner role where the developer is at the center, and AI performs real-time suggestions and reviews.",
+
+                // Page 7: Summary of Core Differences (New)
+                page7Title: "Core Differences Summary",
+                page7Subtitle: "Choosing the Right AI Tool for You",
+                page7CliRole: "Automation & Execution Agent",
+                page7CliFeat1: "Large-scale Structure Auto-gen",
+                page7CliFeat2: "Direct Terminal Command Execution",
+                page7CliFeat3: "DevOps & CI/CD Integration",
+                page7CliKeyword: '"AI Performs"',
+                page7AsstRole: "Real-time Coding Partner",
+                page7AsstFeat1: "Precise Implementation & Review",
+                page7AsstFeat2: "Real-time In-line IDE Suggestions",
+                page7AsstFeat3: "Compliance with Security Policies",
+                page7AsstKeyword: '"AI Assists"',
+                page7TableCol1: "Comparison Item",
+                page7TableRow1Col1: "Environment",
+                page7TableRow1Col2: "Terminal",
+                page7TableRow1Col3: "IDE (Extension)",
+                page7TableRow2Col1: "User",
+                page7TableRow2Col2: "Automation-oriented Devs",
+                page7TableRow2Col3: "All Enterprise Dev Teams",
+                page7TableRow3Col1: "Strength",
+                page7TableRow3Col2: "Multi-file Project Building",
+                page7TableRow3Col3: "Fine-grained Code Optimization",
+
+                // Page 8: Hands-on Practice (Updated)
+                page8Title: "Hands-on Practice",
+                page8Subtitle: "Experience it yourself!",
+                page8Practice1Title: "Resume Auto-classification",
+                page8Practice1Desc: "hr_test directory",
+                page8Practice2Title: "Card Statement Classification",
+                page8Practice2Desc: "corp_card directory",
+                page8Practice3Title: "Marketing Web Page",
+                page8Practice3Desc: "web_page directory",
+
+                page8InstallBtn: "Gemini CLI Installation Guide",
+                page8CodeAssistBtn: "Code Assist Installation Guide",
+                installModalTitle: "Gemini CLI Installation Guide",
+                codeAssistModalTitle: "Code Assist Installation Guide",
+
+                // Gemini CLI Installation (EN)
+                installStep1Title: "Install Google Cloud CLI",
+                installStep1Win: "Windows",
+                installStep1Mac: "macOS",
+                installStep1MacBrew: "Using Homebrew:",
+                installStep1Direct: "Direct Download Guide",
+                installStep2Title: "Install Node.js (LTS Recommended)",
+                installStep2Win: "Windows",
+                installStep2Mac: "macOS",
+                installStep3Title: "Install Gemini CLI",
+                installStep3Desc: "Run the following command in your terminal (CMD/PowerShell).",
+                installStep3Tip: "※ If you get a permission error on Mac/Linux, add <code>sudo </code> at the beginning.",
+                installStep4Title: "Configuration & Project Selection",
+                installStep4Desc1: "1) Check Google Cloud Project ID",
+                installStep4Console: "Copy the 'Project ID' from the Google Cloud Console Dashboard.",
+                installStep4GcpLink: "Go to GCP Console Dashboard",
+                installStep4Desc2: "2) Create .env file & Input ID",
+                installStep4EnvTip: "Create a <code>.env</code> file in the <b>root</b> directory of your project and paste the copied ID.",
+                installStep4Auth: "3) Google Cloud Authentication",
+                installStep5Title: "Install VS Code",
+                installStep5Desc: "Install Visual Studio Code, the essential editor for AI coding.",
+                installStep5Common: "Windows/Mac (Common)",
+                installStep5Download: "Download VS Code",
+                installStep5MacBrew: "macOS (Homebrew)",
+                installStep6Title: "Install Gemini CLI Companion",
+                installStep6Desc: "Install the extension to use the agent more efficiently in VS Code.",
+                installStep6MethodTitle: "Installation Method:",
+                installStep6Method1: "Click the <b>Extensions</b> icon on the left menu of VS Code",
+                installStep6Method2: "Search for <b>'Gemini CLI Companion'</b>",
+                installStep6Method3: "Click the blue <b>Install</b> button",
+                installStep7Title: "Execute & Authenticate Gemini",
+                installStep7Desc: "You're all set! Launch Gemini in your terminal and complete authentication.",
+                installStep7MethodTitle: "Execution & Auth Steps:",
+                installStep7Method1: "Select <b>Terminal</b> > <b>New Terminal</b> from the top menu",
+                installStep7Method2: "Enter <code>gemini</code> and press Enter",
+                installStep7Method3: "When the Gemini prompt appears, enter <code>/auth</code> and press Enter",
+                installStep7Method4: "Use arrow keys to select <b>Vertex AI</b> and press Enter",
+                installStep7Method5: "<b>Login</b> with your Google account in the web browser that opens automatically",
+                installStep7Success: "※ Once logged in, you can start chatting and practicing coding!",
+
+                // Code Assist Installation (EN)
+                caStep1Title: "Install VS Code",
+                caStep1Desc: "Install Visual Studio Code, the essential editor for AI coding.",
+                caStep1Common: "Windows / Mac (Common)",
+                caStep1Download: "Download Installer",
+                caStep1MacBrew: "macOS (Homebrew)",
+                caStep2Title: "Install Gemini Code Assist Extension",
+                caStep2Desc: "Search for and install <b>'Gemini Code Assist'</b> (formerly Google Cloud Code) in the VS Code Marketplace.",
+                caStep2Method1: "Click the <b>Extensions</b> icon on the left menu of VS Code",
+                caStep2Method2: "Search for <b>'Gemini Code Assist'</b> and click <b>Install</b>",
+                caStep3Title: "Google Cloud Login",
+                caStep3Method1: "Click <b>Gemini Code Assist</b> (or Cloud Code) in the status bar",
+                caStep3Method2: "Select <b>Sign in to Google Cloud</b>",
+                caStep3Method3: "Log in with your Google account and allow permissions",
+                caStep4Title: "Project Selection",
+                caStep4Method1: "Click <b>no-project</b> or <b>Gemini Code Assist</b> in the status bar.",
+                caStep4Method2: "The <b>'Select a Google Cloud Project'</b> menu will appear at the top center.",
+                caStep4Method3: "Select the project ID you want to use for practice.",
+                caStep5Title: "Verify Gemini Code Assist Activation",
+                caStep5Desc: "Click the <b>Gemini Code Assist</b> icon in the sidebar and check if the Gemini section is displayed correctly.",
+                caStep5Success: "※ You can now get real-time suggestions while coding or use the sidebar chat.",
+
+                prevBtn: "← Prev",
+                nextBtn: "Next →",
+                glossaryTitle: "Glossary",
+                glossaryVibeTitle: "Vibe Coding",
+                glossaryVibeDesc: "A method where you instruct an AI in natural language, and the AI writes and executes the code for you. It's like telling an employee what feature you want and they build it.",
+                glossaryIdeTitle: "Code Editor Screen (IDE)",
+                glossaryIdeDesc: "A convenient screen where you can work with AI. Think of it as a user-friendly workspace like Word or PowerPoint. All complex features are organized in one place for your convenience.",
+                glossaryApiTitle: "API (Application Programming Interface)",
+                glossaryApiDesc: "An API is a set of rules that allow different programs to communicate. It lets you request what you need with a simple command, like ordering from a menu, without needing to know the complex details.",
+                glossaryBoilerplateTitle: "Boilerplate",
+                glossaryBoilerplateDesc: "Refers to basic code segments that must be written repeatedly.",
+                glossaryLegacyTitle: "Legacy Code",
+                glossaryLegacyDesc: "Refers to old code written in the past that is currently under maintenance.",
+                glossaryDebtTitle: "Technical Debt",
+                glossaryDebtDesc: "The future cost of rework caused by choosing an easy solution now for faster development.",
+                glossaryCicdTitle: "CI/CD",
+                glossaryCicdDesc: "An automated system that automatically checks and deploys developed code.",
+                glossaryTtmTitle: "TTM (Time-to-Market)",
+                glossaryTtmDesc: "The time it takes from an initial idea to the actual product launch.",
+                glossaryMockupTitle: "Mockup",
+                glossaryMockupDesc: "A visual model used to check the product's design before the actual product is built.",
+                marketModalTitle: "Top Case Studies: AI Coding in Marketing",
+                marketCase1Title: "MegazoneCloud – My Personal News Bot with GPT",
+                marketCase1Subtitle: "A marketer's first personalized news service - ",
+                marketCase1Desc: `No coding knowledge needed. I described "create a news service," and it built a system that automatically collects, summarizes, and emails news daily. Now, marketers can build real services on their own.`,
+                marketCase2Title: "Starbucks – Winning Customers' Hearts with AI",
+                marketCase2Subtitle: "The gold standard of personalized marketing",
+                marketCase2Desc: "Starbucks used an AI recommendation algorithm, combining customer purchase history with external data like weather, to suggest personalized drinks. As a result, email open rates tripled, and app usage significantly increased.",
+                marketCase3Title: "BMW – Generative AI in Advertising",
+                marketCase3Subtitle: "Auto-generating targeted visual ads",
+                marketCase3Desc: "BMW introduced generative AI into its ad production. By automatically creating car images and ad copy tailored to target audiences, their campaign more than doubled social media conversion rates.",
+                marketCase4Title: "Nutella – 7 Million Unique Designs",
+                marketCase4Subtitle: "Algorithm-designed packaging becomes a sell-out success",
+                marketCase4Desc: "Nutella used an AI algorithm to create over 7 million unique designs for a limited-edition package. This attempt not only sold out but also generated huge viral buzz on social media, boosting brand awareness.",
+                marketCase5Title: "L'Oréal – AI Accelerates Global Marketing",
+                marketCase5Subtitle: "80% reduction in content creation time with NLP",
+                marketCase5Desc: "L'Oréal adopted AI NLP to automatically generate and translate marketing copy for thousands of products worldwide, drastically speeding up global product launches and cutting content creation time by 80%.",
+                marketQuote: `"AI increases the execution power of marketers by replacing or enhancing repetitive tasks, allowing them to focus more on creative strategy."`,
+                hModalTitle: "H Corp. AI Code Assistant Success",
+                hModalSubtitle: "Process Innovation and Productivity Gains through AI",
+                hModalCoreTitle: "Key Achievements",
+                hModalCore1Title: "AI Development Standards",
+                hModalCore1Desc: "Established systematic AI coding guidelines",
+                hModalCore2Title: "Developer Empowerment",
+                hModalCore2Desc: "Enhanced ability to leverage AI tools",
+                hModalCore3Title: "Code Development",
+                hModalCore3Desc: "Secured major business references",
+                hModalEffectsTitle: "Expected Effects",
+                hModalStatus1: "Tech Verified",
+                hModalStatus2: "Guide Completed",
+                hModalStatus3: "Training Done",
+                hModalTableCat: "Item",
+                hModalTableBefore: "Manual",
+                hModalTableAfter: "AI-Driven",
+                hModalTask1: "API Development",
+                hModalTask2: "Core Function",
+                hModalTask3: "UI Development",
+                hModalResult: "Over 30% Reduction in Dev Time",
+                hModalResultDesc: "Maximizing productivity with AI",
+                chatTitle: "AI Code Recommendation",
+                chatWelcome: `Hello! What code are you curious about? For example, ask "Show me how to handle button clicks in JavaScript."`,
+                chatPlaceholder: "Enter your message..."
+            }
+        };
+
+        let currentPage = 1;
+        const totalPages = 8;
+        let currentLang = 'ko';
+
+        function showPage(pageNumber) {
+            // 모든 페이지 숨기기
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // 현재 페이지 보이기
+            const currentSection = document.getElementById(`page-${pageNumber}`);
+            if (currentSection) {
+                currentSection.classList.add('active');
+            }
+
+            // 페이지 인디케이터 업데이트
+            document.getElementById('current-page').textContent = pageNumber;
+
+            // 버튼 상태 업데이트
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            prevBtn.disabled = pageNumber === 1;
+            nextBtn.disabled = pageNumber === totalPages;
+
+            // 페이지 맨 위로 스크롤
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        }
+
+        // 키보드 네비게이션
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowLeft') {
+                previousPage();
+            } else if (event.key === 'ArrowRight') {
+                nextPage();
+            }
+        });
+
+        // 용어집 모달 토글 기능
+        const glossaryToggleButton = document.getElementById('glossary-toggle-button');
+        const glossaryOverlay = document.getElementById('glossary-overlay');
+        const glossaryCloseButton = document.getElementById('glossary-close-button');
+
+        function toggleGlossary() {
+            glossaryOverlay.style.display = glossaryOverlay.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // H사 사례 모달 기능
+        const hCompanyModal = document.getElementById('h-company-modal');
+        const hCompanyCloseButton = document.getElementById('h-company-close-button');
+        const efficiencyCard = document.getElementById('efficiency-card');
+
+        function toggleHCompanyModal() {
+            hCompanyModal.style.display = hCompanyModal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // 마케팅 사례 모달 기능
+        const marketModal = document.getElementById('market-overlay');
+        const marketCloseButton = document.getElementById('market-close-button');
+        const marketCard = document.getElementById('market-card');
+
+        function toggleMarketModal() {
+            marketModal.style.display = marketModal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // 설치 가이드 모달 기능
+        const installModal = document.getElementById('install-overlay');
+        const installGuideBtn = document.getElementById('install-guide-btn');
+        const installCloseButton = document.getElementById('install-close-button');
+
+        function toggleInstallModal() {
+            installModal.style.display = installModal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Code Assist 가이드 모달 기능
+        const codeAssistModal = document.getElementById('codeassist-overlay');
+        const codeAssistGuideBtn = document.getElementById('codeassist-guide-btn');
+        const codeAssistCloseButton = document.getElementById('codeassist-close-button');
+
+        function toggleCodeAssistModal() {
+            codeAssistModal.style.display = codeAssistModal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        const setLanguage = (lang) => {
+            currentLang = lang;
+            localStorage.setItem('preferredLanguage', lang);
+            document.documentElement.lang = lang;
+
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('[data-lang-key-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-lang-key-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+            // 버튼 활성화 상태 업데이트
+            const koBtn = document.getElementById('lang-ko-btn');
+            const enBtn = document.getElementById('lang-en-btn');
+            if (koBtn) koBtn.classList.toggle('active', lang === 'ko');
+            if (enBtn) enBtn.classList.toggle('active', lang === 'en');
+        };
+
+        // 버튼 이벤트 리스너 추가
+        document.addEventListener('DOMContentLoaded', function () {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            if (prevBtn) prevBtn.addEventListener('click', previousPage);
+            if (nextBtn) nextBtn.addEventListener('click', nextPage);
+
+            // 언어 전환 버튼 리스너
+            const koBtn = document.getElementById('lang-ko-btn');
+            const enBtn = document.getElementById('lang-en-btn');
+            if (koBtn) koBtn.addEventListener('click', () => setLanguage('ko'));
+            if (enBtn) enBtn.addEventListener('click', () => setLanguage('en'));
+
+            // 용어집 이벤트 리스너
+            if (glossaryToggleButton) glossaryToggleButton.addEventListener('click', toggleGlossary);
+            if (glossaryCloseButton) glossaryCloseButton.addEventListener('click', toggleGlossary);
+            if (glossaryOverlay) {
+                glossaryOverlay.addEventListener('click', function (event) {
+                    if (event.target.id === 'glossary-overlay') {
+                        toggleGlossary();
+                    }
+                });
+            }
+
+            // H사 사례 모달 이벤트 리스너
+            if (efficiencyCard) {
+                efficiencyCard.addEventListener('click', toggleHCompanyModal);
+                hCompanyCloseButton.addEventListener('click', toggleHCompanyModal);
+                hCompanyModal.addEventListener('click', function (event) {
+                    if (event.target.id === 'h-company-modal') {
+                        toggleHCompanyModal();
+                    }
+                });
+            }
+
+            // 마케팅 사례 모달 이벤트 리스너
+            if (marketCard) {
+                marketCard.addEventListener('click', toggleMarketModal);
+                marketCloseButton.addEventListener('click', toggleMarketModal);
+                marketModal.addEventListener('click', function (event) {
+                    if (event.target.id === 'market-overlay') {
+                        toggleMarketModal();
+                    }
+                });
+            }
+
+            // 설치 가이드 모달 이벤트 리스너
+            if (installGuideBtn) {
+                installGuideBtn.addEventListener('click', toggleInstallModal);
+                installCloseButton.addEventListener('click', toggleInstallModal);
+                installModal.addEventListener('click', function (event) {
+                    if (event.target.id === 'install-overlay') {
+                        toggleInstallModal();
+                    }
+                });
+            }
+
+            // Code Assist 가이드 모달 이벤트 리스너
+            if (codeAssistGuideBtn) {
+                codeAssistGuideBtn.addEventListener('click', toggleCodeAssistModal);
+                codeAssistCloseButton.addEventListener('click', toggleCodeAssistModal);
+                codeAssistModal.addEventListener('click', function (event) {
+                    if (event.target.id === 'codeassist-overlay') {
+                        toggleCodeAssistModal();
+                    }
+                });
+            }
+
+            // 초기 페이지 설정 및 언어 설정
+            const preferredLanguage = localStorage.getItem('preferredLanguage') || 'ko';
+            setLanguage(preferredLanguage);
+            showPage(1);
+        });
+    </script>
+
+</body>
+
+</html>
