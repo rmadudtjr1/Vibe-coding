@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Coding: AI 마케팅 페이지 생성기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #fafafa; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #FF4B2B, #FF416C);
+        }
+        .step-active { border-color: #FF4B2B; color: #FF4B2B; }
+        .preview-window {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border-radius: 2rem;
+            overflow: hidden;
+            background: white;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-10 text-slate-800">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="inline-block px-4 py-1 bg-red-100 text-red-600 rounded-full text-sm font-bold mb-4">Vibe Coding 실습 03</div>
+            <h1 class="text-4xl md:text-5xl font-black mb-4">AI 제품 홍보 페이지 생성기</h1>
+            <p class="text-slate-500 text-lg">제품 PDF를 업로드하면 AI가 즉시 고퀄리티 마케팅 웹사이트를 디자인합니다.</p>
+        </header>
+
+        <!-- Input Section -->
+        <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-200 mb-12">
+            <div class="flex flex-col md:flex-row items-center gap-10">
+                <div class="w-full md:w-1/2">
+                    <label class="block text-lg font-black mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-sm">1</span>
+                        제품 PDF 가이드 업로드
+                    </label>
+                    <div class="relative border-2 border-dashed border-slate-300 rounded-2xl p-8 hover:border-red-400 transition-all bg-slate-50 group cursor-pointer text-center" onclick="document.getElementById('pdf-input').click()">
+                        <input type="file" id="pdf-input" accept=".pdf" class="hidden" onchange="handlePdfUpload(this)">
+                        <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">📄</div>
+                        <p class="font-bold text-slate-600" id="pdf-name">PDF 파일을 선택하세요</p>
+                        <p class="text-xs text-slate-400 mt-2">제품명, 특징, 가격이 포함된 파일을 권장합니다.</p>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <label class="block text-lg font-black mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-sm">2</span>
+                        마케팅 컨셉 선택
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="setTheme('modern')" class="theme-btn p-4 rounded-xl border-2 border-slate-200 hover:bg-slate-50 font-bold step-active">모던 & 심플</button>
+                        <button onclick="setTheme('dynamic')" class="theme-btn p-4 rounded-xl border-2 border-slate-200 hover:bg-slate-50 font-bold">에너제틱</button>
+                    </div>
+                    <button id="generate-btn" onclick="generatePage()" disabled class="w-full mt-6 bg-slate-900 text-white py-4 rounded-2xl font-black text-xl shadow-lg opacity-50 cursor-not-allowed transition-all">
+                        AI 웹페이지 생성 시작
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generating Loader (Hidden) -->
+        <div id="loader" class="hidden text-center py-20">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-red-500 border-t-transparent mb-4"></div>
+            <p class="text-xl font-bold text-slate-700 italic">AI가 PDF 내용을 분석하여 레이아웃을 설계하는 중...</p>
+        </div>
+
+        <!-- Preview Section (Hidden by default) -->
+        <div id="preview-section" class="hidden animate-fadeIn">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-black flex items-center gap-2">
+                    <span class="w-3 h-8 bg-red-500 rounded-full"></span>
+                    생성된 홍보 페이지 미리보기
+                </h2>
+                <button onclick="window.print()" class="px-6 py-2 bg-white border border-slate-300 rounded-full font-bold text-sm hover:bg-slate-50">
+                    페이지 내보내기
+                </button>
+            </div>
+            
+            <!-- Marketing Page Preview Container -->
+            <div id="web-preview" class="preview-window border border-slate-200 min-h-[800px]">
+                <!-- AI Generated Content goes here -->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-16 text-center text-slate-400 text-sm">
+            <p>© 2026 MegazoneCloud AI Vibe Coding Practice</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentTheme = 'modern';
+        let pdfData = null;
+
+        function setTheme(theme) {
+            currentTheme = theme;
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.remove('step-active', 'bg-red-50');
+                if(btn.innerText.includes(theme === 'modern' ? '모던' : '에너제틱')) {
+                    btn.classList.add('step-active', 'bg-red-50');
+                }
+            });
+        }
+
+        function handlePdfUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                document.getElementById('pdf-name').innerText = file.name;
+                const btn = document.getElementById('generate-btn');
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                btn.classList.add('hover:bg-red-600', 'bg-red-500');
+                
+                // 가짜 데이터 생성 (실습 시나리오용)
+                pdfData = {
+                    name: file.name.split('.')[0].replace('guide_', '').replace('catalog_', ''),
+                    version: "v2.0 Premium"
+                };
+            }
+        }
+
+        function generatePage() {
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('preview-section').classList.add('hidden');
+            
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('preview-section').classList.remove('hidden');
+                renderGeneratedContent();
+                window.scrollTo({ top: document.getElementById('preview-section').offsetTop - 20, behavior: 'smooth' });
+            }, 2500);
+        }
+
+        function renderGeneratedContent() {
+            const container = document.getElementById('web-preview');
+            const bgClass = currentTheme === 'modern' ? 'bg-slate-900' : 'gradient-bg';
+            const accentText = currentTheme === 'modern' ? 'text-blue-500' : 'text-red-500';
+            const accentBg = currentTheme === 'modern' ? 'bg-blue-600' : 'bg-red-500';
+            
+            const content = `
+                <div class="font-sans text-slate-900 overflow-hidden">
+                    <!-- Hero Section -->
+                    <section class="${bgClass} text-white py-32 px-10 text-center relative">
+                        <div class="max-w-4xl mx-auto relative z-10">
+                            <span class="inline-block px-4 py-1 bg-white/20 backdrop-blur-md rounded-full text-sm font-bold mb-6 tracking-widest uppercase">Next Generation Solution</span>
+                            <h1 class="text-6xl md:text-8xl font-black mb-8 leading-tight animate-fadeIn">${pdfData.name.toUpperCase()}</h1>
+                            <p class="text-2xl md:text-3xl opacity-90 mb-12 font-light leading-relaxed">
+                                복잡한 기술을 가장 인간다운 방식으로.<br>
+                                우리가 제안하는 새로운 비즈니스 패러다임을 경험하세요.
+                            </p>
+                            <div class="flex justify-center gap-4">
+                                <button class="bg-white text-slate-900 px-10 py-4 rounded-full font-black text-xl hover:scale-105 transition-all shadow-2xl">자세히 알아보기</button>
+                                <button class="bg-transparent border-2 border-white/30 text-white px-10 py-4 rounded-full font-bold text-xl hover:bg-white/10 transition-all">기술 문서 보기</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Core Value Section -->
+                    <section class="py-24 px-10 bg-white">
+                        <div class="max-w-6xl mx-auto text-center mb-20">
+                            <h2 class="text-4xl font-black mb-6 ${accentText}">왜 ${pdfData.name}인가?</h2>
+                            <p class="text-xl text-slate-500 max-w-3xl mx-auto">수만 건의 PDF 데이터를 학습한 AI가 분석한 이 제품의 핵심 가치와 비전입니다.</p>
+                        </div>
+                        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                            <div>
+                                <h3 class="text-3xl font-black mb-6 leading-tight">단순한 기능을 넘어선<br>완벽한 생태계 구축</h3>
+                                <div class="space-y-8">
+                                    <div class="flex gap-5">
+                                        <div class="w-12 h-12 ${accentBg} rounded-2xl flex items-center justify-center text-white flex-shrink-0 shadow-lg">01</div>
+                                        <div>
+                                            <h4 class="text-xl font-bold mb-2">지능형 자동화 워크플로우</h4>
+                                            <p class="text-slate-500 leading-relaxed">반복적인 수작업을 AI가 대신 처리하여 업무 효율을 500% 이상 향상시킵니다.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-5">
+                                        <div class="w-12 h-12 ${accentBg} rounded-2xl flex items-center justify-center text-white flex-shrink-0 shadow-lg">02</div>
+                                        <div>
+                                            <h4 class="text-xl font-bold mb-2">실시간 데이터 동기화</h4>
+                                            <p class="text-slate-500 leading-relaxed">전 세계 어디서든 지연 없는 협업 환경을 제공하며 데이터 정합성을 보장합니다.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-5">
+                                        <div class="w-12 h-12 ${accentBg} rounded-2xl flex items-center justify-center text-white flex-shrink-0 shadow-lg">03</div>
+                                        <div>
+                                            <h4 class="text-xl font-bold mb-2">무한한 확장성 (Scalability)</h4>
+                                            <p class="text-slate-500 leading-relaxed">비즈니스 규모 성장에 따라 시스템을 유연하게 확장할 수 있는 클라우드 네이티브 아키텍처를 지향합니다.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-100 rounded-[3rem] p-4 shadow-inner relative group">
+                                <div class="w-full h-[500px] bg-slate-200 rounded-[2.5rem] flex items-center justify-center text-slate-400 font-black italic">
+                                    [ 제품 기술 상세 비주얼 ]
+                                </div>
+                                <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-3xl shadow-2xl border border-slate-100 max-w-[200px]">
+                                    <p class="text-4xl font-black ${accentText} mb-1">99.9%</p>
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter">Availability & Uptime</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Feature Deep Dive -->
+                    <section class="py-24 px-10 bg-slate-50">
+                        <div class="max-w-6xl mx-auto">
+                            <div class="text-center mb-20">
+                                <h2 class="text-4xl font-black mb-4">상세 기능 살펴보기</h2>
+                                <p class="text-slate-500">PDF 가이드에 담긴 모든 기술 스펙을 시각화했습니다.</p>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div class="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-shadow">
+                                    <div class="text-4xl mb-6">🤖</div>
+                                    <h3 class="text-xl font-black mb-4">AI 엔진 통합</h3>
+                                    <ul class="text-slate-500 space-y-3 text-sm">
+                                        <li class="flex items-center gap-2 font-medium">✓ 자가 학습 알고리즘 탑재</li>
+                                        <li class="flex items-center gap-2 font-medium">✓ 다국어 번역 및 분석 지원</li>
+                                        <li class="flex items-center gap-2 font-medium">✓ 예측 모델 자동 생성</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-shadow">
+                                    <div class="text-4xl mb-6">☁️</div>
+                                    <h3 class="text-xl font-black mb-4">클라우드 최적화</h3>
+                                    <ul class="text-slate-500 space-y-3 text-sm">
+                                        <li class="flex items-center gap-2 font-medium">✓ 멀티 클라우드 배포 지원</li>
+                                        <li class="flex items-center gap-2 font-medium">✓ 서버리스 아키텍처 적용</li>
+                                        <li class="flex items-center gap-2 font-medium">✓ 리소스 자동 절감 모드</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-shadow">
+                                    <div class="text-4xl mb-6">🔒</div>
+                                    <h3 class="text-xl font-black mb-4">보안 및 거버넌스</h3>
+                                    <ul class="text-slate-500 space-y-3 text-sm">
+                                        <li class="flex items-center gap-2 font-medium">✓ 종단간 암호화(E2EE)</li>
+                                        <li class="flex items-center gap-2 font-medium">✓ 권한 관리 매니저</li>
+                                        <li class="flex items-center gap-2 font-medium">✓ 글로벌 컴플라이언스 준수</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Use Case Section -->
+                    <section class="py-24 px-10 bg-white">
+                        <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-20 items-center">
+                            <div class="md:w-1/3">
+                                <h2 class="text-4xl font-black mb-6">다양한 활용 사례</h2>
+                                <p class="text-slate-500 leading-relaxed mb-10">
+                                    이미 수많은 업계 리더들이 ${pdfData.name}를 통해 새로운 기회를 창출하고 있습니다.
+                                </p>
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-slate-50 rounded-2xl border-l-4 ${accentText.replace('text', 'border')}">
+                                        <p class="font-bold">"업무 시간이 절반으로 줄었습니다."</p>
+                                        <p class="text-xs text-slate-400 mt-1">- 글로벌 IT 기업 A사 마케팅 팀</p>
+                                    </div>
+                                    <div class="p-4 bg-slate-50 rounded-2xl border-l-4 ${accentText.replace('text', 'border')}">
+                                        <p class="font-bold">"데이터 분석의 새로운 지평을 열었습니다."</p>
+                                        <p class="text-xs text-slate-400 mt-1">- 금융 솔루션 B사 분석 전문가</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:w-2/3 grid grid-cols-2 gap-4">
+                                <div class="h-64 bg-slate-100 rounded-3xl flex items-center justify-center text-slate-300 font-bold italic">Visual Case 01</div>
+                                <div class="h-64 bg-slate-100 rounded-3xl flex items-center justify-center text-slate-300 font-bold italic translate-y-12">Visual Case 02</div>
+                                <div class="h-64 bg-slate-100 rounded-3xl flex items-center justify-center text-slate-300 font-bold italic">Visual Case 03</div>
+                                <div class="h-64 bg-slate-100 rounded-3xl flex items-center justify-center text-slate-300 font-bold italic translate-y-12">Visual Case 04</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- FAQ Section -->
+                    <section class="py-24 px-10 bg-slate-900 text-white">
+                        <div class="max-w-3xl mx-auto">
+                            <h2 class="text-3xl font-black mb-12 text-center">자주 묻는 질문 (FAQ)</h2>
+                            <div class="space-y-6">
+                                <div class="border-b border-white/10 pb-6">
+                                    <h4 class="text-lg font-bold mb-3 flex items-center gap-3">
+                                        <span class="${accentText}">Q.</span> 기존 시스템과 연동이 가능한가요?
+                                    </h4>
+                                    <p class="text-white/60 text-sm leading-relaxed pl-7">네, ${pdfData.name}는 표준 API를 지원하여 기존에 사용 중인 대부분의 엔터프라이즈 시스템과 매끄럽게 통합됩니다.</p>
+                                </div>
+                                <div class="border-b border-white/10 pb-6">
+                                    <h4 class="text-lg font-bold mb-3 flex items-center gap-3">
+                                        <span class="${accentText}">Q.</span> 보안 보안 정책은 어떻게 되나요?
+                                    </h4>
+                                    <p class="text-white/60 text-sm leading-relaxed pl-7">최고 수준의 암호화 기술을 적용하고 있으며, 매달 외부 기관을 통해 정기적인 보안 점검을 진행하고 있습니다.</p>
+                                </div>
+                                <div class="border-b border-white/10 pb-6">
+                                    <h4 class="text-lg font-bold mb-3 flex items-center gap-3">
+                                        <span class="${accentText}">Q.</span> 데이터 학습에 대한 저작권 문제가 없나요?
+                                    </h4>
+                                    <p class="text-white/60 text-sm leading-relaxed pl-7">저희 AI 엔진은 합법적으로 확보된 데이터만을 학습하며, 고객사의 데이터는 별도의 격리된 환경에서 안전하게 보호됩니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Final Message -->
+                    <section class="py-24 text-center bg-white">
+                        <div class="max-w-4xl mx-auto px-10">
+                            <h2 class="text-4xl font-black mb-8 leading-tight">준비되셨나요?<br>미래의 비즈니스를 지금 설계하세요.</h2>
+                            <p class="text-slate-500 text-lg mb-12 font-medium">더 자세한 내용은 배포된 기술 문서를 통해 확인하실 수 있습니다.</p>
+                            <div class="flex justify-center items-center gap-10 opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all">
+                                <span class="font-black text-2xl tracking-tighter">MEGAZONE CLOUD</span>
+                                <span class="font-black text-2xl tracking-tighter italic">AI Lab</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+            container.innerHTML = content;
+        }
+    </script>
+
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 1s ease-out forwards; }
+    </style>
+</body>
+</html>
