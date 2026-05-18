@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Coding: 카드 사용 내역 분석기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f1f5f9; }
+        .gradient-text {
+            background: linear-gradient(135deg, #10B981, #3B82F6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .analyze-btn {
+            background: linear-gradient(135deg, #10B981, #059669);
+            transition: all 0.3s ease;
+        }
+        .analyze-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4);
+        }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <div class="inline-block px-4 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-bold mb-4">Vibe Coding 실습 02</div>
+            <h1 class="text-4xl md:text-5xl font-black mb-4"><span class="gradient-text">카드 사용 내역 자동 분류기</span></h1>
+            <p class="text-slate-500 text-lg font-medium">엑셀 파일을 올리면 AI가 회계 기준에 맞춰 비용을 분류하고 분석합니다.</p>
+        </header>
+
+        <!-- File Upload Section -->
+        <div class="bg-white p-8 rounded-3xl card-shadow border border-slate-200 mb-10">
+            <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-2xl p-10 hover:border-emerald-400 transition-colors bg-slate-50 group cursor-pointer" onclick="document.getElementById('file-input').click()">
+                <input type="file" id="file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleFileUpload(this)">
+                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <p class="text-lg font-bold text-slate-700" id="file-name-display">엑셀 또는 CSV 파일을 선택하세요</p>
+                <p class="text-sm text-slate-400 mt-2">사용처, 금액 컬럼이 포함된 파일을 권장합니다.</p>
+            </div>
+            <button id="analyze-button" onclick="processData()" disabled class="analyze-btn w-full mt-8 py-4 text-white font-black text-xl rounded-2xl shadow-lg opacity-50 cursor-not-allowed">
+                내역 분석 및 그래프 생성
+            </button>
+        </div>
+
+        <!-- Analysis Dashboard (Hidden by default) -->
+        <div id="dashboard" class="hidden space-y-8 animate-fadeIn">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Summary Table -->
+                <div class="bg-white p-8 rounded-3xl card-shadow border border-slate-200">
+                    <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
+                        <span class="w-2 h-6 bg-emerald-500 rounded-full"></span>
+                        회계 기준별 지출 요약
+                    </h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="text-slate-400 text-sm border-b">
+                                <tr>
+                                    <th class="pb-4">카테고리</th>
+                                    <th class="pb-4 text-right">총 금액 (원)</th>
+                                    <th class="pb-4 text-right">비중</th>
+                                </tr>
+                            </thead>
+                            <tbody id="summary-body" class="divide-y divide-slate-50 text-slate-700">
+                                <!-- Data injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Chart -->
+                <div class="bg-white p-8 rounded-3xl card-shadow border border-slate-200 flex flex-col items-center">
+                    <h2 class="text-2xl font-black text-slate-800 mb-6 self-start flex items-center gap-2">
+                        <span class="w-2 h-6 bg-blue-500 rounded-full"></span>
+                        지출 분포 그래프
+                    </h2>
+                    <div class="w-full max-w-[400px]">
+                        <canvas id="expense-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Log -->
+            <div class="bg-white p-8 rounded-3xl card-shadow border border-slate-200">
+                <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
+                    <span class="w-2 h-6 bg-amber-500 rounded-full"></span>
+                    상세 분류 내역
+                </h2>
+                <div class="max-h-[400px] overflow-y-auto rounded-xl border border-slate-100">
+                    <table class="w-full text-left">
+                        <thead class="sticky top-0 bg-slate-50 text-slate-500 text-xs font-bold uppercase">
+                            <tr>
+                                <th class="px-6 py-3">사용처</th>
+                                <th class="px-6 py-3">금액</th>
+                                <th class="px-6 py-3">AI 분류 결과</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detail-body" class="divide-y divide-slate-100 text-sm">
+                            <!-- Rows injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-16 text-center text-slate-400 text-sm">
+            <p>© 2026 MegazoneCloud AI Vibe Coding Practice</p>
+        </footer>
+    </div>
+
+    <script>
+        let rawData = [];
+        let chartInstance = null;
+
+        // 회계 분류 규칙 (간이 AI 로직)
+        const CATEGORY_RULES = {
+            "식비": ["카페", "식당", "빵집", "마트", "편의점", "커피", "치킨", "피자", "김밥", "베이커리", "스타벅스", "맥도날드"],
+            "교통비": ["택시", "버스", "지하철", "주유", "철도", "코레일", "카카오T", "하이패스"],
+            "문화생활": ["영화", "넷플릭스", "유튜브", "서점", "교보문고", "공연", "전시"],
+            "쇼핑": ["쿠팡", "네이버페이", "무신사", "백화점", "아울렛", "의류", "화장품"],
+            "의료비": ["병원", "약국", "치과", "의원"],
+            "기타": []
+        };
+
+        function classifyExpense(store) {
+            for (const [category, keywords] of Object.entries(CATEGORY_RULES)) {
+                if (keywords.some(k => store.includes(k))) return category;
+            }
+            return "기타";
+        }
+
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            document.getElementById('file-name-display').innerText = file.name;
+            const btn = document.getElementById('analyze-button');
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                rawData = XLSX.utils.sheet_to_json(worksheet);
+                console.log("Loaded Data:", rawData);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function processData() {
+            if (rawData.length === 0) {
+                alert("파일에 데이터가 없거나 형식이 올바르지 않습니다.");
+                return;
+            }
+
+            const categoryTotals = {};
+            const detailedRows = [];
+            let grandTotal = 0;
+
+            rawData.forEach(row => {
+                // '사용처' 또는 '가맹점' 컬럼 찾기
+                const store = row['사용처'] || row['가맹점'] || row['내역'] || "알 수 없음";
+                // '금액' 또는 '결제금액' 컬럼 찾기
+                const amount = parseInt(row['금액'] || row['결제금액'] || 0);
+                
+                const category = classifyExpense(store);
+                
+                categoryTotals[category] = (categoryTotals[category] || 0) + amount;
+                grandTotal += amount;
+
+                detailedRows.push({ store, amount, category });
+            });
+
+            renderUI(categoryTotals, detailedRows, grandTotal);
+        }
+
+        function renderUI(totals, details, grandTotal) {
+            const dashboard = document.getElementById('dashboard');
+            dashboard.classList.remove('hidden');
+
+            // 1. Render Summary Table
+            const summaryBody = document.getElementById('summary-body');
+            summaryBody.innerHTML = "";
+            const labels = [];
+            const values = [];
+
+            Object.entries(totals).sort((a,b) => b[1] - a[1]).forEach(([cat, val]) => {
+                const percent = ((val / grandTotal) * 100).toFixed(1);
+                labels.push(cat);
+                values.push(val);
+
+                summaryBody.innerHTML += `
+                    <tr>
+                        <td class="py-4 font-bold text-slate-800">${cat}</td>
+                        <td class="py-4 text-right font-mono">${val.toLocaleString()}원</td>
+                        <td class="py-4 text-right text-slate-400 text-sm">${percent}%</td>
+                    </tr>
+                `;
+            });
+
+            // 2. Render Detail Table
+            const detailBody = document.getElementById('detail-body');
+            detailBody.innerHTML = "";
+            details.forEach(item => {
+                detailBody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4 font-medium text-slate-700">${item.store}</td>
+                        <td class="px-6 py-4 font-mono text-slate-600">${item.amount.toLocaleString()}원</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 rounded text-xs font-bold ${getCategoryStyle(item.category)}">
+                                ${item.category}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // 3. Render Chart
+            renderChart(labels, values);
+
+            window.scrollTo({ top: dashboard.offsetTop - 50, behavior: 'smooth' });
+        }
+
+        function getCategoryStyle(cat) {
+            const styles = {
+                "식비": "bg-emerald-50 text-emerald-700",
+                "교통비": "bg-blue-50 text-blue-700",
+                "문화생활": "bg-purple-50 text-purple-700",
+                "쇼핑": "bg-pink-50 text-pink-700",
+                "의료비": "bg-red-50 text-red-700",
+                "기타": "bg-slate-100 text-slate-600"
+            };
+            return styles[cat] || styles["기타"];
+        }
+
+        function renderChart(labels, data) {
+            const ctx = document.getElementById('expense-chart').getContext('2d');
+            
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#10B981', '#3B82F6', '#8B5CF6', '#EC4899', '#EF4444', '#94A3B8'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+    </script>
+
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.8s ease forwards; }
+    </style>
+</body>
+</html>
