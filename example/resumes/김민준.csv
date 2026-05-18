@@ -1,0 +1,2 @@
+Name,Email,Phone,Job Title,Company,Experience Summary,Education,Skills
+김민준,minjun.kim@example.com,010-1234-5678,Software Engineer,ABC Tech,"Developed scalable web applications using Python and Django; improved system performance by 15%.",서울대학교 컴퓨터공학과 학사,Python,Django,SQL,AWS,Docker
